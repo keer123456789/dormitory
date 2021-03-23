@@ -1,6 +1,7 @@
 package com.keer.dormitory.core.exception;
 
-import com.cetc15.portalwebsite.core.model.Result;
+
+import com.keer.dormitory.core.model.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

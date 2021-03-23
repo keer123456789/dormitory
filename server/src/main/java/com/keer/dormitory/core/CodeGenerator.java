@@ -20,7 +20,7 @@ public class CodeGenerator {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/src/main/java");
-        gc.setAuthor("keer");
+        gc.setAuthor("linhui");
         gc.setOpen(false);
         gc.setFileOverride(true);
         gc.setSwagger2(true);
@@ -30,7 +30,7 @@ public class CodeGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://192.168.12.144:3306/dstidata");
+        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/dormitory");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
@@ -40,7 +40,7 @@ public class CodeGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setModuleName("");
-        pc.setParent("com.cetc15.portalwebsite");
+        pc.setParent("com.keer.dormitory");
         mpg.setPackageInfo(pc);
 
         // 自定义配置
@@ -67,9 +67,9 @@ public class CodeGenerator {
         TemplateConfig templateConfig = new TemplateConfig();
 
         //控制 不生成 controller
-        templateConfig.setController("");
-        templateConfig.setXml(null);
-        mpg.setTemplate(templateConfig);
+//        templateConfig.setController("");
+//        templateConfig.setXml(null);
+//        mpg.setTemplate(templateConfig);
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
@@ -78,7 +78,7 @@ public class CodeGenerator {
         strategy.setEntityLombokModel(false);
         strategy.setRestControllerStyle(true);
         strategy.setControllerMappingHyphenStyle(true);
-        strategy.setSuperControllerClass("com.cetc15.portalwebsite.core.base.BaseController");
+        strategy.setSuperControllerClass("com.keer.dormitory.core.base.BaseController");
         strategy.setTablePrefix("sys_");
         mpg.setStrategy(strategy);
         mpg.execute();
