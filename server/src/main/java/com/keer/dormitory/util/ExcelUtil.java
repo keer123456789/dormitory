@@ -64,6 +64,11 @@ public class ExcelUtil {
         return true;
     }
 
+    /**
+     * 检查学生信息导入文件格式是否正确
+     * @param path 文件路径
+     * @return
+     */
     public static boolean checkExcelStudentModel(String path) {
         Workbook wb = null;
         try {

@@ -73,5 +73,7 @@ swagger:
   # 请求前缀
   pathMapping: /
 
-
+file:
+  block-path: D:\code\mywork\dormitory\server\file\block\
+  student-path: D:\code\mywork\dormitory\server\file\file\
 
