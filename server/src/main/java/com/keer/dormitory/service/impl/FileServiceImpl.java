@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
+
 import java.util.stream.Collectors;
 
 /**
@@ -42,7 +42,6 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void asyncCreateBlock(String path)  {
-//        new Thread(() -> {
         Workbook wb = null;
         try {
             wb = WorkbookFactory.create(new File(path));
@@ -91,7 +90,6 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        }).start();
     }
 
     @Override
