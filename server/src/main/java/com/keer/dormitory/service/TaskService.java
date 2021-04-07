@@ -1,16 +1,16 @@
 package com.keer.dormitory.service;
 
-import com.keer.dormitory.entity.Block;
+import com.keer.dormitory.entity.Task;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- * 宿舍楼信息 服务类
+ * 任务表 服务类
  * </p>
  *
  * @author linhui
  * @since 2021-04-07
  */
-public interface BlockService extends IService<Block> {
+public interface TaskService extends IService<Task> {
 
 }

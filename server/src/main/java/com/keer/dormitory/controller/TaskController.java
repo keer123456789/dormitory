@@ -8,15 +8,15 @@ import com.keer.dormitory.core.base.BaseController;
 
 /**
  * <p>
- * 物品信息表 前端控制器
+ * 任务表 前端控制器
  * </p>
  *
  * @author linhui
  * @since 2021-04-07
  */
 @RestController
-@RequestMapping("/object")
-public class ObjectController extends BaseController {
+@RequestMapping("/task")
+public class TaskController extends BaseController {
 
 }
 

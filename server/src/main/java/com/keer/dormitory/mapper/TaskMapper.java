@@ -1,16 +1,16 @@
 package com.keer.dormitory.mapper;
 
-import com.keer.dormitory.entity.Student;
+import com.keer.dormitory.entity.Task;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
- * 学生信息表 Mapper 接口
+ * 任务表 Mapper 接口
  * </p>
  *
  * @author linhui
  * @since 2021-04-07
  */
-public interface StudentMapper extends BaseMapper<Student> {
+public interface TaskMapper extends BaseMapper<Task> {
 
 }

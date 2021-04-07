@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
  * </p>
  *
  * @author linhui
- * @since 2021-03-23
+ * @since 2021-04-07
  */
 @ApiModel(value="Student对象", description="学生信息表")
 public class Student implements Serializable {
@@ -61,6 +61,9 @@ public class Student implements Serializable {
 
     @ApiModelProperty(value = "学生状态  0-正常 1-休学  2-退宿")
     private Integer state;
+
+    @ApiModelProperty(value = "任务id 表示学生属于的批次")
+    private Integer taskId;
 
 
     public String getId() {
@@ -175,6 +178,14 @@ public class Student implements Serializable {
         this.state = state;
     }
 
+    public Integer getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Integer taskId) {
+        this.taskId = taskId;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -192,6 +203,7 @@ public class Student implements Serializable {
         ", phoneNum=" + phoneNum +
         ", address=" + address +
         ", state=" + state +
+        ", taskId=" + taskId +
         "}";
     }
 }
