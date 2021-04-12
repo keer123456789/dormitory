@@ -67,9 +67,9 @@ public class CodeGenerator {
         TemplateConfig templateConfig = new TemplateConfig();
 
         //控制 不生成 controller
-//        templateConfig.setController("");
-//        templateConfig.setXml(null);
-//        mpg.setTemplate(templateConfig);
+        templateConfig.setController("");
+        templateConfig.setXml(null);
+        mpg.setTemplate(templateConfig);
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();

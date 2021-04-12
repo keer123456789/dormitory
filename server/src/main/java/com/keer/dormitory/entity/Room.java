@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
  * </p>
  *
  * @author linhui
- * @since 2021-04-07
+ * @since 2021-04-12
  */
 @ApiModel(value="Room对象", description="房间表")
 public class Room implements Serializable {

@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
  * </p>
  *
  * @author linhui
- * @since 2021-04-07
+ * @since 2021-04-12
  */
 @ApiModel(value="Task对象", description="任务表")
 public class Task implements Serializable {
@@ -39,7 +39,7 @@ public class Task implements Serializable {
     private String filePath;
 
     @ApiModelProperty(value = "用户id")
-    private String userId;
+    private Integer userId;
 
 
     public Integer getId() {
@@ -90,11 +90,11 @@ public class Task implements Serializable {
         this.filePath = filePath;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -107,6 +107,7 @@ public class Task implements Serializable {
         ", threadId=" + threadId +
         ", status=" + status +
         ", filePath=" + filePath +
+        ", userId=" + userId +
         "}";
     }
 }

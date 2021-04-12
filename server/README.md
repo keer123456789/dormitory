@@ -73,21 +73,25 @@
       |----|----|----|----|
       |userName|string|用户名|是|
       |role|string|角色|是|
-      |block|string **数组**|管理的宿舍楼列表|是|
+      |blockInfos|blockInfo **数组**|管理的宿舍楼信息列表|是|
+      
+      |blockInfo对象|参数类型|说明|是否必须|
+      |----|----|----|----|
+      |blockId|string|宿舍楼id|是|
+      |blockName|string|宿舍楼名称|是|
 
 #### 4 给宿管分配宿舍楼
 1.	接口路径：/user
 2.	接口说明：管理员分配宿舍楼给宿管 管理员权限
-3.	接口方法：PUT
-4.	请求参数（query）
-
+3.	接口方法：POST
+4.	请求参数（query）   
+      无
+5.	请求体（body）
+      
       |参数名|参数类型|说明|是否必须|
       |----|----|----|----|
       |userName|string|用户名|是|
       |blockIds|int **数组**|宿舍楼id 数组|是|
-
-5.	请求体（body）
-      无
 6.	返回参数（response）
 
       |参数名|参数类型|说明|是否必须|

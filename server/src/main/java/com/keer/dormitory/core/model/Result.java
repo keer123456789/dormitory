@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * common result
+ *
  * @author Bob
  * @since 2021-01-19
  */
@@ -12,15 +13,24 @@ public class Result<T> implements Serializable {
 
     public static final int SUCCESS_CODE = 200;
     public static final int ERROR_CODE = 500;
+    public static final int LOGIN_ERROR = 501;
+    public static final int ROLE_ERROR = 502;
 
-    /** 状态码 */
+    /**
+     * 状态码
+     */
     protected int code;
-    /** 返回消息 */
+    /**
+     * 返回消息
+     */
     protected String msg;
-    /** 数据对象 */
+    /**
+     * 数据对象
+     */
     protected T data;
 
-    public Result(){}
+    public Result() {
+    }
 
     public Result(int code, String msg) {
         this.code = code;
@@ -35,18 +45,23 @@ public class Result<T> implements Serializable {
     public int getCode() {
         return code;
     }
+
     public void setCode(int code) {
         this.code = code;
     }
+
     public String getMsg() {
         return msg;
     }
+
     public void setMsg(String msg) {
         this.msg = msg;
     }
+
     public T getData() {
         return data;
     }
+
     public void setData(T data) {
         this.data = data;
     }
@@ -65,6 +80,14 @@ public class Result<T> implements Serializable {
 
     public static Result error(String msg) {
         return new Result(ERROR_CODE, msg);
+    }
+
+    public static Result loginError() {
+        return new Result(LOGIN_ERROR, "请先登录！！");
+    }
+
+    public static Result roleError() {
+        return new Result(ROLE_ERROR, "权限不足！！");
     }
 
     @Override
