@@ -104,9 +104,9 @@ public class SwaggerConfig
         // 用ApiInfoBuilder进行定制
         return new ApiInfoBuilder()
                 // 设置标题
-                .title("军委门户接口文档")
+                .title("宿舍管理系统接口文档")
                 // 描述
-                .description("军委门户后台接口")
+                .description("宿舍管理系统接口文档")
                 // 版本
                 .version("1.0.0")
                 .build();
