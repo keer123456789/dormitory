@@ -50,6 +50,7 @@ public class FileController extends BaseController {
                 fileService.asyncCreateBlock(blockPath + fileName);
                 return Result.ok();
             } else {
+                dest.delete();
                 return Result.error("校验文件失败，请按照模板正确填写");
             }
 
@@ -59,7 +60,32 @@ public class FileController extends BaseController {
         return Result.error("上传失败，请选择文件");
     }
 
-    @ApiOperation(value = "上传宿舍楼信息文件接口")
+    @ApiOperation(value = "校验宿舍楼信息文件接口")
+    @PostMapping("/block/valid")
+    @ResponseBody
+    public Result<String> validBlockFile(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return Result.error("上传失败，请选择文件");
+        }
+        String fileName = file.getOriginalFilename();
+        File dest = new File(blockPath + fileName);
+        try {
+            file.transferTo(dest);
+            if (ExcelUtil.checkExcelBlockModel(blockPath + fileName)) {
+                return Result.ok();
+            } else {
+                dest.delete();
+                return Result.error("校验文件失败，请按照模板正确填写");
+            }
+
+        } catch (IOException e) {
+            logger.error(e.toString(), e);
+        }
+        return Result.error("上传失败，请选择文件");
+    }
+
+
+    @ApiOperation(value = "上传学生信息文件接口")
     @PostMapping("/student/upload")
     @ResponseBody
     public Result<String> uploadStudent(@RequestParam("file") MultipartFile file) {
@@ -71,8 +97,34 @@ public class FileController extends BaseController {
         try {
             file.transferTo(dest);
             if (ExcelUtil.checkExcelStudentModel(studentPath + fileName)) {
+                //TODO 批量导入学生信息
                 return Result.ok();
             } else {
+                dest.delete();
+                return Result.error("校验文件失败，请按照模板正确填写");
+            }
+
+        } catch (IOException e) {
+            logger.error(e.toString(), e);
+        }
+        return Result.error("上传失败，请选择文件");
+    }
+
+    @ApiOperation(value = "校验学生信息文件接口")
+    @PostMapping("/student/valid")
+    @ResponseBody
+    public Result validStudent(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return Result.error("上传失败，请选择文件");
+        }
+        String fileName = file.getOriginalFilename();
+        File dest = new File(studentPath + fileName);
+        try {
+            file.transferTo(dest);
+            if (ExcelUtil.checkExcelStudentModel(studentPath + fileName)) {
+                return Result.ok();
+            } else {
+                dest.delete();
                 return Result.error("校验文件失败，请按照模板正确填写");
             }
 

@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * /user POST接口 对象
  */
-public class SetBlockManagerDTO {
+public class SetBlockManagerReq {
     private String userName;
     private List<Integer> block;
 

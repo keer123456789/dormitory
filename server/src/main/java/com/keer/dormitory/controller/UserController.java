@@ -6,19 +6,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.keer.dormitory.core.model.PageData;
-import com.keer.dormitory.core.model.PageResult;
 import com.keer.dormitory.core.model.Result;
 import com.keer.dormitory.dto.RegisterReq;
-import com.keer.dormitory.dto.SetBlockManagerDTO;
+import com.keer.dormitory.dto.SetBlockManagerReq;
 import com.keer.dormitory.dto.UserInfoDTO;
 import com.keer.dormitory.entity.Block;
 import com.keer.dormitory.entity.User;
 import com.keer.dormitory.service.BlockService;
 import com.keer.dormitory.service.UserService;
 import io.swagger.annotations.*;
-import jdk.nashorn.internal.runtime.JSONFunctions;
-import org.apache.commons.collections4.list.UnmodifiableList;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +25,6 @@ import com.keer.dormitory.core.base.BaseController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -139,7 +134,7 @@ public class UserController extends BaseController {
 
     @PostMapping
     @ApiOperation(value = "管理员  给宿管分配宿舍楼")
-    public Result setBlockManager(@RequestBody SetBlockManagerDTO data,HttpServletRequest req) {
+    public Result setBlockManager(@RequestBody SetBlockManagerReq data, HttpServletRequest req) {
         User loginUser = (User) req.getSession().getAttribute("userInfo");
         if (loginUser == null || loginUser.getRole() != 0) {
             logger.info("接收到请求[POST]: /user ；权限不足，user ：{}", loginUser);

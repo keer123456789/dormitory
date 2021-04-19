@@ -11,7 +11,7 @@
  Target Server Version : 80013
  File Encoding         : 65001
 
- Date: 22/03/2021 22:08:15
+ Date: 19/04/2021 20:38:46
 */
 
 SET NAMES utf8mb4;
@@ -28,11 +28,14 @@ CREATE TABLE `block`  (
   `floor_size` int(11) NULL DEFAULT NULL COMMENT '楼层数',
   `manager_id` int(11) NULL DEFAULT NULL COMMENT '宿管人员id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '宿舍楼信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '宿舍楼信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of block
 -- ----------------------------
+INSERT INTO `block` VALUES (1, '1', 2, 2, 2);
+INSERT INTO `block` VALUES (2, '2', 2, 2, 2);
+INSERT INTO `block` VALUES (3, '4号楼', 4, 5, NULL);
 
 -- ----------------------------
 -- Table structure for floor
@@ -45,11 +48,16 @@ CREATE TABLE `floor`  (
   `floor_num` int(11) NULL DEFAULT NULL COMMENT '楼层',
   `image_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '楼层平面图位置',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of floor
 -- ----------------------------
+INSERT INTO `floor` VALUES (1, '4号楼-0层', 3, 1, NULL);
+INSERT INTO `floor` VALUES (2, '4号楼-1层', 3, 2, NULL);
+INSERT INTO `floor` VALUES (3, '4号楼-2层', 3, 3, NULL);
+INSERT INTO `floor` VALUES (4, '4号楼-3层', 3, 4, NULL);
+INSERT INTO `floor` VALUES (5, '4号楼-4层', 3, 5, NULL);
 
 -- ----------------------------
 -- Table structure for object
@@ -104,11 +112,31 @@ CREATE TABLE `student`  (
   `phone_num` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '手机号',
   `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '家庭地址',
   `state` int(11) NOT NULL DEFAULT 0 COMMENT '学生状态  0-正常 1-休学  2-退宿',
+  `task_id` int(11) NULL DEFAULT NULL COMMENT '任务id 表示学生属于的批次',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '学生信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of student
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for task
+-- ----------------------------
+DROP TABLE IF EXISTS `task`;
+CREATE TABLE `task`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键 自增',
+  `block_id` int(11) NULL DEFAULT NULL COMMENT '宿舍楼号',
+  `room_size` int(11) NULL DEFAULT NULL COMMENT '房间大小',
+  `thread_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '线程id',
+  `status` int(11) NULL DEFAULT NULL COMMENT '任务状态 0-未开始 1-正在运行 2-运行结束 1-任务失败',
+  `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '导入学生信息文件（excel）位置',
+  `user_id` int(11) NULL DEFAULT NULL COMMENT '用户id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '任务表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of task
 -- ----------------------------
 
 -- ----------------------------
@@ -121,10 +149,12 @@ CREATE TABLE `user`  (
   `role` int(11) NOT NULL DEFAULT 1 COMMENT '用户角色 0-admin 1-宿管',
   `password` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '密码',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息 表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息 表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
+INSERT INTO `user` VALUES (1, 'admin', 0, '123456');
+INSERT INTO `user` VALUES (2, 'zjl', 1, '123456');
 
 SET FOREIGN_KEY_CHECKS = 1;
