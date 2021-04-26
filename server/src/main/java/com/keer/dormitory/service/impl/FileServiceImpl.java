@@ -1,15 +1,11 @@
 package com.keer.dormitory.service.impl;
 
-import com.baomidou.mybatisplus.extension.api.R;
 import com.keer.dormitory.constant.ExeclConstant;
 import com.keer.dormitory.entity.Block;
 import com.keer.dormitory.entity.Floor;
 import com.keer.dormitory.entity.Room;
-import com.keer.dormitory.service.BlockService;
-import com.keer.dormitory.service.FileService;
-import com.keer.dormitory.service.FloorService;
-import com.keer.dormitory.service.RoomService;
-import jdk.internal.org.objectweb.asm.Handle;
+import com.keer.dormitory.entity.Student;
+import com.keer.dormitory.service.*;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -20,10 +16,8 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import java.util.stream.Collectors;
 
 /**
@@ -34,14 +28,16 @@ import java.util.stream.Collectors;
 @Service
 public class FileServiceImpl implements FileService {
     @Resource
-    BlockService blockService;
+    private BlockService blockService;
     @Resource
-    FloorService floorService;
+    private FloorService floorService;
     @Resource
-    RoomService roomService;
+    private RoomService roomService;
+    @Resource
+    private StudentService studentService;
 
     @Override
-    public void asyncCreateBlock(String path)  {
+    public void asyncCreateBlock(String path) {
         Workbook wb = null;
         try {
             wb = WorkbookFactory.create(new File(path));
@@ -74,8 +70,8 @@ public class FileServiceImpl implements FileService {
             for (int k = 1; k <= roomSize; k++) {
                 Row roomRow = roomInfo.getRow(k);
                 Room room = new Room();
-                room.setName((int)roomRow.getCell(1).getNumericCellValue()+"");
-                room.setFloorId(numToId.get((int)roomRow.getCell(2).getNumericCellValue()));
+                room.setName((int) roomRow.getCell(1).getNumericCellValue() + "");
+                room.setFloorId(numToId.get((int) roomRow.getCell(2).getNumericCellValue()));
                 room.setSize(block.getRoomSize());
                 room.setEmptySize(block.getRoomSize());
                 rooms.add(room);
@@ -94,6 +90,45 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void asyncCreateStudent(String path) {
+        Workbook wb = null;
+        try {
+            wb = WorkbookFactory.create(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Sheet studentInfos = wb.getSheetAt(0);
+        List<Student> students = new ArrayList<>();
+        /**
+         * 先将文件数据存入数据库
+         */
+        for (int i = 1; i < studentInfos.getLastRowNum(); i++) {
+            Row row = studentInfos.getRow(i);
+            Student student=new Student();
+            student.setId(row.getCell(0).getStringCellValue());
+            student.setName(row.getCell(1).getStringCellValue());
+            student.setIdentityNum(row.getCell(2).getStringCellValue());
+            student.setNation(row.getCell(3).getStringCellValue());
+            student.setSex(row.getCell(4).getStringCellValue());
+            student.setAcademy(row.getCell(5).getStringCellValue());
+            student.setMajor(row.getCell(6).getStringCellValue());
+            student.setClassNum(row.getCell(7).getStringCellValue());
+            student.setRegion(row.getCell(8).getStringCellValue());
+            student.setPhoneNum(row.getCell(9).getStringCellValue());
+            student.setAddress(row.getCell(10).getStringCellValue());
+            students.add(student);
+            if(students.size()==50){
+                studentService.saveBatch(students);
+                students=new ArrayList<>();
+            }
+        }
+        studentService.saveBatch(students);
+        try {
+            wb.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
     }
 

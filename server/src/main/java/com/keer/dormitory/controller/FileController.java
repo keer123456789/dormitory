@@ -110,6 +110,14 @@ public class FileController extends BaseController {
         return Result.error("上传失败，请选择文件");
     }
 
+
+    @GetMapping("/test")
+    public Result uploadStudent() {
+//        fileService.asyncCreateStudent("file/学生信息导入模板.xlsx");
+        fileService.asyncCreateBlock("file/宿舍楼导入模板.xlsx");
+        return Result.ok();
+    }
+
     @ApiOperation(value = "校验学生信息文件接口")
     @PostMapping("/student/valid")
     @ResponseBody

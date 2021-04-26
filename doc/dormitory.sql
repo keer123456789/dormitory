@@ -11,7 +11,7 @@
  Target Server Version : 80013
  File Encoding         : 65001
 
- Date: 19/04/2021 20:38:46
+ Date: 26/04/2021 23:21:56
 */
 
 SET NAMES utf8mb4;
@@ -28,14 +28,13 @@ CREATE TABLE `block`  (
   `floor_size` int(11) NULL DEFAULT NULL COMMENT '楼层数',
   `manager_id` int(11) NULL DEFAULT NULL COMMENT '宿管人员id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '宿舍楼信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '宿舍楼信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of block
 -- ----------------------------
-INSERT INTO `block` VALUES (1, '1', 2, 2, 2);
-INSERT INTO `block` VALUES (2, '2', 2, 2, 2);
-INSERT INTO `block` VALUES (3, '4号楼', 4, 5, NULL);
+INSERT INTO `block` VALUES (1, '3号楼-男', 6, 5, NULL);
+INSERT INTO `block` VALUES (2, '4号楼-女', 4, 5, NULL);
 
 -- ----------------------------
 -- Table structure for floor
@@ -48,16 +47,21 @@ CREATE TABLE `floor`  (
   `floor_num` int(11) NULL DEFAULT NULL COMMENT '楼层',
   `image_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '楼层平面图位置',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of floor
 -- ----------------------------
-INSERT INTO `floor` VALUES (1, '4号楼-0层', 3, 1, NULL);
-INSERT INTO `floor` VALUES (2, '4号楼-1层', 3, 2, NULL);
-INSERT INTO `floor` VALUES (3, '4号楼-2层', 3, 3, NULL);
-INSERT INTO `floor` VALUES (4, '4号楼-3层', 3, 4, NULL);
-INSERT INTO `floor` VALUES (5, '4号楼-4层', 3, 5, NULL);
+INSERT INTO `floor` VALUES (26, '1层', 1, 1, NULL);
+INSERT INTO `floor` VALUES (27, '2层', 1, 2, NULL);
+INSERT INTO `floor` VALUES (28, '3层', 1, 3, NULL);
+INSERT INTO `floor` VALUES (29, '4层', 1, 4, NULL);
+INSERT INTO `floor` VALUES (30, '5层', 1, 5, NULL);
+INSERT INTO `floor` VALUES (31, '1层', 2, 1, NULL);
+INSERT INTO `floor` VALUES (32, '2层', 2, 2, NULL);
+INSERT INTO `floor` VALUES (33, '3层', 2, 3, NULL);
+INSERT INTO `floor` VALUES (34, '4层', 2, 4, NULL);
+INSERT INTO `floor` VALUES (35, '5层', 2, 5, NULL);
 
 -- ----------------------------
 -- Table structure for object
@@ -92,6 +96,106 @@ CREATE TABLE `room`  (
 -- ----------------------------
 -- Records of room
 -- ----------------------------
+INSERT INTO `room` VALUES (1, '101', 6, 6, 26);
+INSERT INTO `room` VALUES (2, '102', 6, 6, 26);
+INSERT INTO `room` VALUES (3, '103', 6, 6, 26);
+INSERT INTO `room` VALUES (4, '104', 6, 6, 26);
+INSERT INTO `room` VALUES (5, '105', 6, 6, 26);
+INSERT INTO `room` VALUES (6, '106', 6, 6, 26);
+INSERT INTO `room` VALUES (7, '107', 6, 6, 26);
+INSERT INTO `room` VALUES (8, '108', 6, 6, 26);
+INSERT INTO `room` VALUES (9, '109', 6, 6, 26);
+INSERT INTO `room` VALUES (10, '110', 6, 6, 26);
+INSERT INTO `room` VALUES (11, '201', 6, 6, 27);
+INSERT INTO `room` VALUES (12, '202', 6, 6, 27);
+INSERT INTO `room` VALUES (13, '203', 6, 6, 27);
+INSERT INTO `room` VALUES (14, '204', 6, 6, 27);
+INSERT INTO `room` VALUES (15, '205', 6, 6, 27);
+INSERT INTO `room` VALUES (16, '206', 6, 6, 27);
+INSERT INTO `room` VALUES (17, '207', 6, 6, 27);
+INSERT INTO `room` VALUES (18, '208', 6, 6, 27);
+INSERT INTO `room` VALUES (19, '209', 6, 6, 27);
+INSERT INTO `room` VALUES (20, '210', 6, 6, 27);
+INSERT INTO `room` VALUES (21, '301', 6, 6, 28);
+INSERT INTO `room` VALUES (22, '302', 6, 6, 28);
+INSERT INTO `room` VALUES (23, '303', 6, 6, 28);
+INSERT INTO `room` VALUES (24, '304', 6, 6, 28);
+INSERT INTO `room` VALUES (25, '305', 6, 6, 28);
+INSERT INTO `room` VALUES (26, '306', 6, 6, 28);
+INSERT INTO `room` VALUES (27, '307', 6, 6, 28);
+INSERT INTO `room` VALUES (28, '308', 6, 6, 28);
+INSERT INTO `room` VALUES (29, '309', 6, 6, 28);
+INSERT INTO `room` VALUES (30, '310', 6, 6, 28);
+INSERT INTO `room` VALUES (31, '401', 6, 6, 29);
+INSERT INTO `room` VALUES (32, '402', 6, 6, 29);
+INSERT INTO `room` VALUES (33, '403', 6, 6, 29);
+INSERT INTO `room` VALUES (34, '404', 6, 6, 29);
+INSERT INTO `room` VALUES (35, '405', 6, 6, 29);
+INSERT INTO `room` VALUES (36, '406', 6, 6, 29);
+INSERT INTO `room` VALUES (37, '407', 6, 6, 29);
+INSERT INTO `room` VALUES (38, '408', 6, 6, 29);
+INSERT INTO `room` VALUES (39, '409', 6, 6, 29);
+INSERT INTO `room` VALUES (40, '410', 6, 6, 29);
+INSERT INTO `room` VALUES (41, '501', 6, 6, 30);
+INSERT INTO `room` VALUES (42, '502', 6, 6, 30);
+INSERT INTO `room` VALUES (43, '503', 6, 6, 30);
+INSERT INTO `room` VALUES (44, '504', 6, 6, 30);
+INSERT INTO `room` VALUES (45, '505', 6, 6, 30);
+INSERT INTO `room` VALUES (46, '506', 6, 6, 30);
+INSERT INTO `room` VALUES (47, '507', 6, 6, 30);
+INSERT INTO `room` VALUES (48, '508', 6, 6, 30);
+INSERT INTO `room` VALUES (49, '509', 6, 6, 30);
+INSERT INTO `room` VALUES (50, '510', 6, 6, 30);
+INSERT INTO `room` VALUES (51, '101', 4, 4, 31);
+INSERT INTO `room` VALUES (52, '102', 4, 4, 31);
+INSERT INTO `room` VALUES (53, '103', 4, 4, 31);
+INSERT INTO `room` VALUES (54, '104', 4, 4, 31);
+INSERT INTO `room` VALUES (55, '105', 4, 4, 31);
+INSERT INTO `room` VALUES (56, '106', 4, 4, 31);
+INSERT INTO `room` VALUES (57, '107', 4, 4, 31);
+INSERT INTO `room` VALUES (58, '108', 4, 4, 31);
+INSERT INTO `room` VALUES (59, '109', 4, 4, 31);
+INSERT INTO `room` VALUES (60, '110', 4, 4, 31);
+INSERT INTO `room` VALUES (61, '201', 4, 4, 32);
+INSERT INTO `room` VALUES (62, '202', 4, 4, 32);
+INSERT INTO `room` VALUES (63, '203', 4, 4, 32);
+INSERT INTO `room` VALUES (64, '204', 4, 4, 32);
+INSERT INTO `room` VALUES (65, '205', 4, 4, 32);
+INSERT INTO `room` VALUES (66, '206', 4, 4, 32);
+INSERT INTO `room` VALUES (67, '207', 4, 4, 32);
+INSERT INTO `room` VALUES (68, '208', 4, 4, 32);
+INSERT INTO `room` VALUES (69, '209', 4, 4, 32);
+INSERT INTO `room` VALUES (70, '210', 4, 4, 32);
+INSERT INTO `room` VALUES (71, '301', 4, 4, 33);
+INSERT INTO `room` VALUES (72, '302', 4, 4, 33);
+INSERT INTO `room` VALUES (73, '303', 4, 4, 33);
+INSERT INTO `room` VALUES (74, '304', 4, 4, 33);
+INSERT INTO `room` VALUES (75, '305', 4, 4, 33);
+INSERT INTO `room` VALUES (76, '306', 4, 4, 33);
+INSERT INTO `room` VALUES (77, '307', 4, 4, 33);
+INSERT INTO `room` VALUES (78, '308', 4, 4, 33);
+INSERT INTO `room` VALUES (79, '309', 4, 4, 33);
+INSERT INTO `room` VALUES (80, '310', 4, 4, 33);
+INSERT INTO `room` VALUES (81, '401', 4, 4, 34);
+INSERT INTO `room` VALUES (82, '402', 4, 4, 34);
+INSERT INTO `room` VALUES (83, '403', 4, 4, 34);
+INSERT INTO `room` VALUES (84, '404', 4, 4, 34);
+INSERT INTO `room` VALUES (85, '405', 4, 4, 34);
+INSERT INTO `room` VALUES (86, '406', 4, 4, 34);
+INSERT INTO `room` VALUES (87, '407', 4, 4, 34);
+INSERT INTO `room` VALUES (88, '408', 4, 4, 34);
+INSERT INTO `room` VALUES (89, '409', 4, 4, 34);
+INSERT INTO `room` VALUES (90, '410', 4, 4, 34);
+INSERT INTO `room` VALUES (91, '501', 4, 4, 35);
+INSERT INTO `room` VALUES (92, '502', 4, 4, 35);
+INSERT INTO `room` VALUES (93, '503', 4, 4, 35);
+INSERT INTO `room` VALUES (94, '504', 4, 4, 35);
+INSERT INTO `room` VALUES (95, '505', 4, 4, 35);
+INSERT INTO `room` VALUES (96, '506', 4, 4, 35);
+INSERT INTO `room` VALUES (97, '507', 4, 4, 35);
+INSERT INTO `room` VALUES (98, '508', 4, 4, 35);
+INSERT INTO `room` VALUES (99, '509', 4, 4, 35);
+INSERT INTO `room` VALUES (100, '510', 4, 4, 35);
 
 -- ----------------------------
 -- Table structure for student
@@ -119,6 +223,34 @@ CREATE TABLE `student`  (
 -- ----------------------------
 -- Records of student
 -- ----------------------------
+INSERT INTO `student` VALUES ('1', '张3', '1112313', NULL, NULL, '汉', 0, '信息', '计算机', '123', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('10', '张12', '1112321', NULL, NULL, '汉', 0, '信息', '计算机', '132', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('11', '张13', '1112322', NULL, NULL, '汉', 0, '信息', '计算机', '133', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('12', '张14', '1112323', NULL, NULL, '汉', 0, '信息', '计算机', '134', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('13', '张15', '1112324', NULL, NULL, '汉', 0, '信息', '计算机', '135', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('14', '张16', '1112325', NULL, NULL, '汉', 0, '信息', '计算机', '136', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('15', '张17', '1112326', NULL, NULL, '汉', 0, '信息', '计算机', '137', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('16', '张18', '1112327', NULL, NULL, '汉', 0, '信息', '计算机', '138', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('17', '张19', '1112328', NULL, NULL, '汉', 0, '信息', '计算机', '139', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('18', '张20', '1112329', NULL, NULL, '汉', 0, '信息', '计算机', '140', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('19', '张21', '1112330', NULL, NULL, '汉', 0, '信息', '计算机', '141', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('2', '张4', '1112313', NULL, NULL, '汉', 0, '信息', '计算机', '124', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('20', '张22', '1112331', NULL, NULL, '汉', 0, '信息', '计算机', '142', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('21', '张23', '1112332', NULL, NULL, '汉', 0, '信息', '计算机', '143', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('22', '张24', '1112333', NULL, NULL, '汉', 0, '信息', '计算机', '144', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('23', '张25', '1112334', NULL, NULL, '汉', 0, '信息', '计算机', '145', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('24', '张26', '1112335', NULL, NULL, '汉', 0, '信息', '计算机', '146', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('25', '张27', '1112336', NULL, NULL, '汉', 0, '信息', '计算机', '147', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('26', '张28', '1112337', NULL, NULL, '汉', 0, '信息', '计算机', '148', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('27', '张29', '1112338', NULL, NULL, '汉', 0, '信息', '计算机', '149', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('28', '张30', '1112339', NULL, NULL, '汉', 0, '信息', '计算机', '150', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('3', '张5', '1112314', NULL, NULL, '汉', 0, '信息', '计算机', '125', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('4', '张6', '1112315', NULL, NULL, '汉', 0, '信息', '计算机', '126', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('5', '张7', '1112316', NULL, NULL, '汉', 0, '信息', '计算机', '127', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('6', '张8', '1112317', NULL, NULL, '汉', 0, '信息', '计算机', '128', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('7', '张9', '1112318', NULL, NULL, '汉', 0, '信息', '计算机', '129', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('8', '张10', '1112319', NULL, NULL, '汉', 0, '信息', '计算机', '130', '北京', '12345678900', '丝滑', 0, NULL);
+INSERT INTO `student` VALUES ('9', '张11', '1112320', NULL, NULL, '汉', 0, '信息', '计算机', '131', '北京', '12345678900', '丝滑', 0, NULL);
 
 -- ----------------------------
 -- Table structure for task

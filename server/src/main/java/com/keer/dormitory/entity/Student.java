@@ -2,7 +2,9 @@ package com.keer.dormitory.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -14,13 +16,13 @@ import io.swagger.annotations.ApiModelProperty;
  * @author linhui
  * @since 2021-04-12
  */
-@ApiModel(value="Student对象", description="学生信息表")
+@ApiModel(value = "Student对象", description = "学生信息表")
 public class Student implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "学号")
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.INPUT)
     private String id;
 
     @ApiModelProperty(value = "学生姓名")
@@ -122,6 +124,14 @@ public class Student implements Serializable {
         this.sex = sex;
     }
 
+    public void setSex(String sex) {
+        if (sex.equals("男")) {
+            this.setSex(0);
+        } else if (sex.equals("女")) {
+            this.setSex(1);
+        }
+    }
+
     public String getAcademy() {
         return academy;
     }
@@ -189,21 +199,21 @@ public class Student implements Serializable {
     @Override
     public String toString() {
         return "Student{" +
-        "id=" + id +
-        ", name=" + name +
-        ", identityNum=" + identityNum +
-        ", roomId=" + roomId +
-        ", bedNum=" + bedNum +
-        ", nation=" + nation +
-        ", sex=" + sex +
-        ", academy=" + academy +
-        ", major=" + major +
-        ", classNum=" + classNum +
-        ", region=" + region +
-        ", phoneNum=" + phoneNum +
-        ", address=" + address +
-        ", state=" + state +
-        ", taskId=" + taskId +
-        "}";
+                "id=" + id +
+                ", name=" + name +
+                ", identityNum=" + identityNum +
+                ", roomId=" + roomId +
+                ", bedNum=" + bedNum +
+                ", nation=" + nation +
+                ", sex=" + sex +
+                ", academy=" + academy +
+                ", major=" + major +
+                ", classNum=" + classNum +
+                ", region=" + region +
+                ", phoneNum=" + phoneNum +
+                ", address=" + address +
+                ", state=" + state +
+                ", taskId=" + taskId +
+                "}";
     }
 }

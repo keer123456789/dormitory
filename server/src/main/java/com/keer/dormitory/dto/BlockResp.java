@@ -7,9 +7,9 @@ public class BlockResp {
     private Integer id;
     private String name;
     private String managerName;
-    private Integer floorNum;
-    private Integer studentNum;
-    private Integer roomNum;
+    private int floorNum;
+    private int studentNum;
+    private int roomNum;
 
     public Integer getId() {
         return id;
@@ -35,27 +35,27 @@ public class BlockResp {
         this.managerName = managerName;
     }
 
-    public Integer getFloorNum() {
+    public int getFloorNum() {
         return floorNum;
     }
 
-    public void setFloorNum(Integer floorNum) {
+    public void setFloorNum(int floorNum) {
         this.floorNum = floorNum;
     }
 
-    public Integer getStudentNum() {
+    public int getStudentNum() {
         return studentNum;
     }
 
-    public void setStudentNum(Integer studentNum) {
+    public void setStudentNum(int studentNum) {
         this.studentNum = studentNum;
     }
 
-    public Integer getRoomNum() {
+    public int getRoomNum() {
         return roomNum;
     }
 
-    public void setRoomNum(Integer roomNum) {
+    public void setRoomNum(int roomNum) {
         this.roomNum = roomNum;
     }
 

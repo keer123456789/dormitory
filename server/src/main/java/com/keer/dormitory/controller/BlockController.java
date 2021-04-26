@@ -4,11 +4,13 @@ package com.keer.dormitory.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.keer.dormitory.core.model.PageData;
 import com.keer.dormitory.core.model.PageResult;
 import com.keer.dormitory.core.model.Result;
 import com.keer.dormitory.dto.BlockInfoReq;
 import com.keer.dormitory.dto.BlockResp;
+import com.keer.dormitory.dto.RoomInfoDTO;
 import com.keer.dormitory.entity.*;
 import com.keer.dormitory.service.*;
 import io.swagger.annotations.Api;
@@ -24,6 +26,7 @@ import com.keer.dormitory.core.base.BaseController;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -71,6 +74,27 @@ public class BlockController extends BaseController {
             QueryWrapper<Floor> wrapper = new QueryWrapper<>();
             wrapper.eq("block_id", block.getId());
             floorService.remove(wrapper);
+            return Result.error("创建宿舍楼失败！");
+        }
+        Map<Integer,Integer> floorNumToIdMap=floors.stream().collect(Collectors.toMap(Floor::getFloorNum,Floor::getId));
+        List<Room> rooms=new ArrayList<>();
+        for(RoomInfoDTO roomInfoDTO: data.getRooms()){
+            Room room=new Room();
+            room.setName(roomInfoDTO.getName());
+            room.setEmptySize(block.getRoomSize());
+            room.setSize(block.getRoomSize());
+            room.setFloorId(floorNumToIdMap.get(roomInfoDTO.getFloorNum()));
+            rooms.add(room);
+        }
+        if (!roomService.saveBatch(rooms)) {
+            List<Integer> floorIds=floors.stream().map(Floor::getId).collect(Collectors.toList());
+            blockService.removeById(block.getId());
+            QueryWrapper<Floor> wrapper = new QueryWrapper<>();
+            wrapper.eq("block_id", block.getId());
+            floorService.remove(wrapper);
+            QueryWrapper<Room> roomQueryWrapper = new QueryWrapper<>();
+            roomQueryWrapper.in("floor_id", floorIds);
+            roomService.remove(roomQueryWrapper);
             return Result.error("创建宿舍楼失败！");
         }
         return Result.ok();
@@ -130,22 +154,32 @@ public class BlockController extends BaseController {
             blockResp.setId(block.getId());
             blockResp.setName(block.getName());
 
-            QueryWrapper<User> userWrapper = new QueryWrapper<>();
-            userWrapper.eq("id", block.getManagerId());
-            User user = userService.getOne(userWrapper);
-            blockResp.setManagerName(user.getName());
+            if (block.getManagerId() != null) {
+                QueryWrapper<User> userWrapper = new QueryWrapper<>();
+                userWrapper.eq("id", block.getManagerId());
+                User user = userService.getOne(userWrapper);
+                blockResp.setManagerName(user.getName());
+            }
 
             QueryWrapper<Floor> floorQueryWrapper = new QueryWrapper<>();
             floorQueryWrapper.eq("block_id", block.getId());
             List<Floor> floors = floorService.list(floorQueryWrapper);
             blockResp.setFloorNum(floors.size());
 
+            if (floors.isEmpty()) {
+                resps.add(blockResp);
+                continue;
+            }
             List<Integer> floorIds = floors.stream().map(Floor::getId).collect(Collectors.toList());
             QueryWrapper<Room> roomQueryWrapper = new QueryWrapper<>();
             roomQueryWrapper.in("floor_id", floorIds);
             List<Room> rooms = roomService.list(roomQueryWrapper);
             blockResp.setRoomNum(rooms.size());
 
+            if (rooms.isEmpty()) {
+                resps.add(blockResp);
+                continue;
+            }
             List<Integer> roomIds = rooms.stream().map(Room::getId).collect(Collectors.toList());
             QueryWrapper<Student> studentQueryWrapper = new QueryWrapper<>();
             studentQueryWrapper.in("room_id", floorIds);
@@ -155,7 +189,7 @@ public class BlockController extends BaseController {
         }
         PageData<BlockResp> data = new PageData<>();
         data.setCurrent(page.getCurrent());
-        data.setTotal(page.getPages());
+        data.setTotal(page.getTotal());
         data.setRows(resps);
         return PageResult.ok(data);
     }

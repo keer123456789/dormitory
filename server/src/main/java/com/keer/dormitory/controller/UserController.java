@@ -76,6 +76,7 @@ public class UserController extends BaseController {
         resultJson.put("expireAt", getTomorrow());
         resultJson.put("permissions", JSON.parse("[{\"id\":\"queryForm\",\"operation\":[\"add\",\"edit\"]}]"));
         resultJson.put("roles", JSON.parse("[{\"id\":\"admin\",\"operation\":[\"add\",\"edit\",\"delete\"]}]"));
+        resultJson.put("user",JSON.parse("{\"name\":\""+user.getName()+"\"}"));
         return Result.ok(resultJson);
     }
 
@@ -124,8 +125,11 @@ public class UserController extends BaseController {
             userInfo.setRole(user.getRole());
             QueryWrapper<Block> blockWrapper = new QueryWrapper();
             blockWrapper.eq("manager_id", user.getId());
-            for (Block block : blockService.list(blockWrapper)) {
-                userInfo.addBlockInfo(block.getId(), block.getName());
+            List<Block> blocks = blockService.list(blockWrapper);
+            if (!blocks.isEmpty()) {
+                for (Block block : blockService.list(blockWrapper)) {
+                    userInfo.addBlockInfo(block.getId(), block.getName());
+                }
             }
             userInfos.add(userInfo);
         }
