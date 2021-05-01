@@ -18,5 +18,6 @@ import com.keer.dormitory.core.base.BaseController;
 @RequestMapping("/floor")
 public class FloorController extends BaseController {
 
+
 }
 

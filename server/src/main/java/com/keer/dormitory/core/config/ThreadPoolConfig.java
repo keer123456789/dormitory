@@ -15,9 +15,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class ThreadPoolConfig {
     private static final Logger logger = LoggerFactory.getLogger(ThreadPoolConfig.class);
 
-    @Bean
+    @Bean(name = "asyncThreadExecutor")
     public Executor asyncThreadExecutor() {
-        logger.info("start httpExecutor");
+        logger.info("start Executor");
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         //配置核心线程数
         executor.setCorePoolSize(5);

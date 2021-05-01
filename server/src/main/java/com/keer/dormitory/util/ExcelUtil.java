@@ -44,6 +44,9 @@ public class ExcelUtil {
         if (!r.getCell(ExeclConstant.CELL_FlOOR_NUM_LOCATION).getStringCellValue().equals(ExeclConstant.CELL_FlOOR_NUM)) {
             return false;
         }
+        if (!r.getCell(ExeclConstant.CELL_BLOCK_SEX_LOCATION).getStringCellValue().equals(ExeclConstant.CELL_BLOCK_SEX)) {
+            return false;
+        }
         System.out.println(block.getLastRowNum());
         for (int i = 1; i <= block.getLastRowNum(); i++) {
             Sheet room = wb.getSheet(i + ExeclConstant.SHEET_ROOMINFO);
@@ -66,6 +69,7 @@ public class ExcelUtil {
 
     /**
      * 检查学生信息导入文件格式是否正确
+     *
      * @param path 文件路径
      * @return
      */
@@ -81,7 +85,7 @@ public class ExcelUtil {
             return false;
         }
         Row r = student.getRow(0);
-        if (!r.getCell(ExeclConstant.CELL_NUM_LOCATION).getStringCellValue().equals(ExeclConstant.CELL_NUM)) {
+        if (!r.getCell(ExeclConstant.CELL_ID_LOCATION).getStringCellValue().equals(ExeclConstant.CELL_ID)) {
             return false;
         }
         if (!r.getCell(ExeclConstant.CELL_STUDENT_NAME_LOCATION).getStringCellValue().equals(ExeclConstant.CELL_STUDENT_NAME)) {

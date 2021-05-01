@@ -1,5 +1,10 @@
 package com.keer.dormitory.service;
 
+import com.keer.dormitory.dto.SortInfo;
+import com.keer.dormitory.entity.Task;
+
+import java.util.List;
+
 /**
  * @author: keer
  * @Date: 2021/3/25
@@ -14,7 +19,9 @@ public interface FileService {
 
     /**
      * 根据Excel表 异步创建学生信息
-     * @param path
+     * @param taskId
      */
-    void asyncCreateStudent(String path);
+    void asyncCreateStudent(int taskId);
+
+
 }

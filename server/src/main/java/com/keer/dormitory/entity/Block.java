@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
 
 /**
  * <p>
@@ -34,6 +35,9 @@ public class Block implements Serializable {
 
     @ApiModelProperty(value = "宿管人员id")
     private Integer managerId;
+
+    @ApiModelProperty(value = "性别 0-男；1-女")
+    private Integer sex;
 
 
     public Integer getId() {
@@ -76,14 +80,30 @@ public class Block implements Serializable {
         this.managerId = managerId;
     }
 
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    public void setSex(String sex){
+        if(sex.equals("男")){
+            this.sex=0;
+        }else {
+            this.sex=1;
+        }
+    }
     @Override
     public String toString() {
         return "Block{" +
-        "id=" + id +
-        ", name=" + name +
-        ", roomSize=" + roomSize +
-        ", floorSize=" + floorSize +
-        ", managerId=" + managerId +
-        "}";
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", roomSize=" + roomSize +
+                ", floorSize=" + floorSize +
+                ", managerId=" + managerId +
+                ", sex=" + sex +
+                '}';
     }
 }

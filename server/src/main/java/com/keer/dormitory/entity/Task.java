@@ -23,8 +23,6 @@ public class Task implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @ApiModelProperty(value = "宿舍楼号")
-    private Integer blockId;
 
     @ApiModelProperty(value = "房间大小")
     private Integer roomSize;
@@ -41,6 +39,12 @@ public class Task implements Serializable {
     @ApiModelProperty(value = "用户id")
     private Integer userId;
 
+    @ApiModelProperty(value = "男宿舍楼号，逗号分割")
+    private String maleBlock;
+
+    @ApiModelProperty(value = "女宿舍楼号，逗号分割")
+    private String femaleBlock;
+
 
     public Integer getId() {
         return id;
@@ -48,14 +52,6 @@ public class Task implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getBlockId() {
-        return blockId;
-    }
-
-    public void setBlockId(Integer blockId) {
-        this.blockId = blockId;
     }
 
     public Integer getRoomSize() {
@@ -98,16 +94,33 @@ public class Task implements Serializable {
         this.userId = userId;
     }
 
+    public String getMaleBlock() {
+        return maleBlock;
+    }
+
+    public void setMaleBlock(String maleBlock) {
+        this.maleBlock = maleBlock;
+    }
+
+    public String getFemaleBlock() {
+        return femaleBlock;
+    }
+
+    public void setFemaleBlock(String femaleBlock) {
+        this.femaleBlock = femaleBlock;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
-        "id=" + id +
-        ", blockId=" + blockId +
-        ", roomSize=" + roomSize +
-        ", threadId=" + threadId +
-        ", status=" + status +
-        ", filePath=" + filePath +
-        ", userId=" + userId +
-        "}";
+                "id=" + id +
+                ", roomSize=" + roomSize +
+                ", threadId='" + threadId + '\'' +
+                ", status=" + status +
+                ", filePath='" + filePath + '\'' +
+                ", userId=" + userId +
+                ", maleBlock='" + maleBlock + '\'' +
+                ", femaleBlock='" + femaleBlock + '\'' +
+                '}';
     }
 }

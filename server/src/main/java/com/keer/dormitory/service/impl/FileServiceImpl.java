@@ -1,21 +1,24 @@
 package com.keer.dormitory.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.keer.dormitory.constant.ExeclConstant;
-import com.keer.dormitory.entity.Block;
-import com.keer.dormitory.entity.Floor;
-import com.keer.dormitory.entity.Room;
-import com.keer.dormitory.entity.Student;
+import com.keer.dormitory.dto.SortInfo;
+import com.keer.dormitory.entity.*;
 import com.keer.dormitory.service.*;
+import io.swagger.models.auth.In;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.jdbc.core.metadata.HsqlTableMetaDataProvider;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,6 +38,8 @@ public class FileServiceImpl implements FileService {
     private RoomService roomService;
     @Resource
     private StudentService studentService;
+    @Resource
+    private TaskService taskService;
 
     @Override
     public void asyncCreateBlock(String path) {
@@ -51,6 +56,7 @@ public class FileServiceImpl implements FileService {
             block.setName(row.getCell(1).getStringCellValue());
             block.setRoomSize((int) row.getCell(2).getNumericCellValue());
             block.setFloorSize((int) row.getCell(3).getNumericCellValue());
+            block.setSex(row.getCell(4).getStringCellValue());
             blockService.save(block);
 
             int floorNum = (int) row.getCell(3).getNumericCellValue();
@@ -89,10 +95,16 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void asyncCreateStudent(String path) {
+    @Async(value = "asyncThreadExecutor")
+    public void asyncCreateStudent(int taskId) {
+        Task task = taskService.getById(taskId);
+        task.setThreadId(Thread.currentThread().getId() + "");
+        task.setStatus(1);
+        taskService.updateById(task);
+
         Workbook wb = null;
         try {
-            wb = WorkbookFactory.create(new File(path));
+            wb = WorkbookFactory.create(new File(task.getFilePath()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -103,7 +115,7 @@ public class FileServiceImpl implements FileService {
          */
         for (int i = 1; i < studentInfos.getLastRowNum(); i++) {
             Row row = studentInfos.getRow(i);
-            Student student=new Student();
+            Student student = new Student();
             student.setId(row.getCell(0).getStringCellValue());
             student.setName(row.getCell(1).getStringCellValue());
             student.setIdentityNum(row.getCell(2).getStringCellValue());
@@ -115,10 +127,11 @@ public class FileServiceImpl implements FileService {
             student.setRegion(row.getCell(8).getStringCellValue());
             student.setPhoneNum(row.getCell(9).getStringCellValue());
             student.setAddress(row.getCell(10).getStringCellValue());
+            student.setTaskId(taskId);
             students.add(student);
-            if(students.size()==50){
+            if (students.size() == 50) {
                 studentService.saveBatch(students);
-                students=new ArrayList<>();
+                students = new ArrayList<>();
             }
         }
         studentService.saveBatch(students);
@@ -128,9 +141,12 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
         }
 
-
+//        sortRoom(task, 0);
+//        sortRoom(task, 1);
 
     }
+
+
 
     public static void main(String[] args) {
         List<Floor> floors = new ArrayList<>();

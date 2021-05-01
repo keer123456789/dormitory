@@ -74,6 +74,6 @@ swagger:
   pathMapping: /
 
 file:
-  block-path: D:\code\mywork\dormitory\server\file\block\
-  student-path: D:\code\mywork\dormitory\server\file\file\
+  block-path: E:\code\mywork\dormitory\server\file\block\
+  student-path: E:\code\mywork\dormitory\server\file\file\
 
