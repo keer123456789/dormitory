@@ -417,6 +417,41 @@
    |msg|string|返回消息|否|
    |data|null|无|是|
 
+#### 7 获取学生列表
+
+1. 接口路径：/student
+2. 接口说明：根据模板文件将验证上传的文件格式是否正确
+3. 接口方法：GET
+4. 请求参数（query）  
+   无
+5. 请求体（body） 无
+6. 返回参数（response）
+
+   |参数名|参数类型|说明|是否必须|
+   |----|----|----|----|
+   |code|int|状态码 成功-200 失败-500|是|
+   |msg|string|返回消息|否|
+   |data|student数组对象|无|是|
+
+   |student数组对象|参数类型|说明|是否必须|
+   |----|----|----|----|
+   |blockId|int|宿舍楼号|是|
+   |floorId|int|楼层id|是|
+   |roomId|int|房间id|是|
+   |bedNum|int|床号|是|
+   |id|string|学号|是|
+   |name|string|姓名|是|
+   |phoneNum|string|手机号|是|
+   |classNum|string|行政班号|是|
+   |identity_num|string|身份证号|否|
+   |nation|string|民族|否|
+   |sex|string|性别|0-男；1-女|否|
+   |academy|string|学院|否|
+   |major|string|专业|否|
+   |region|string|地区|否|
+   |address|string|家庭住址|否|
+
+
 ### 1.4 物品管理
 
 #### 1 增加物品
