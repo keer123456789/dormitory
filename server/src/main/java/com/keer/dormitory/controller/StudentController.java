@@ -72,15 +72,15 @@ public class StudentController extends BaseController {
         return Result.ok();
     }
 
-    @GetMapping("/stop/{student_id}")
+    @GetMapping("/stop/{studentId}")
     @ApiOperation("学生退宿")
-    public Result stop(@PathVariable String student_id) {
-        logger.info("接收到请求: /student/stop [GET],data:{}", student_id);
-        if (studentService.getById(student_id) == null) {
+    public Result stop(@PathVariable String studentId) {
+        logger.info("接收到请求: /student/stop [GET],data:{}", studentId);
+        if (studentService.getById(studentId) == null) {
             return Result.error("学生不存在");
         }
         UpdateWrapper<Student> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id", student_id);
+        updateWrapper.eq("id", studentId);
         updateWrapper.set("room_id", null);
         if (!studentService.update(updateWrapper)) {
             return Result.error("更新学生信息失败！");

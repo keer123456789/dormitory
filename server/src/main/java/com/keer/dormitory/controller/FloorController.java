@@ -25,7 +25,7 @@ public class FloorController extends BaseController {
     @GetMapping
     @ApiOperation("获取楼层平面图")
     public Result getImageInfo(@RequestParam Integer blockId,@RequestParam Integer floorNum){
-
+        //TODO
         return null;
     }
 }

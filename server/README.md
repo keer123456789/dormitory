@@ -435,8 +435,6 @@
 
    |student数组对象|参数类型|说明|是否必须|
    |----|----|----|----|
-   |blockId|int|宿舍楼号|是|
-   |floorId|int|楼层id|是|
    |roomId|int|房间id|是|
    |bedNum|int|床号|是|
    |id|string|学号|是|
