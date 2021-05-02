@@ -76,10 +76,10 @@ public class BlockController extends BaseController {
             floorService.remove(wrapper);
             return Result.error("创建宿舍楼失败！");
         }
-        Map<Integer,Integer> floorNumToIdMap=floors.stream().collect(Collectors.toMap(Floor::getFloorNum,Floor::getId));
-        List<Room> rooms=new ArrayList<>();
-        for(RoomInfoDTO roomInfoDTO: data.getRooms()){
-            Room room=new Room();
+        Map<Integer, Integer> floorNumToIdMap = floors.stream().collect(Collectors.toMap(Floor::getFloorNum, Floor::getId));
+        List<Room> rooms = new ArrayList<>();
+        for (RoomInfoDTO roomInfoDTO : data.getRooms()) {
+            Room room = new Room();
             room.setName(roomInfoDTO.getName());
             room.setEmptySize(block.getRoomSize());
             room.setSize(block.getRoomSize());
@@ -87,7 +87,7 @@ public class BlockController extends BaseController {
             rooms.add(room);
         }
         if (!roomService.saveBatch(rooms)) {
-            List<Integer> floorIds=floors.stream().map(Floor::getId).collect(Collectors.toList());
+            List<Integer> floorIds = floors.stream().map(Floor::getId).collect(Collectors.toList());
             blockService.removeById(block.getId());
             QueryWrapper<Floor> wrapper = new QueryWrapper<>();
             wrapper.eq("block_id", block.getId());
@@ -100,7 +100,7 @@ public class BlockController extends BaseController {
         return Result.ok();
     }
 
-    @DeleteMapping("/{id}")
+    @GetMapping("/{id}")
     @ApiOperation(value = "删除宿舍楼接口")
     public Result deleteBlock(@PathVariable String id) {
         logger.info("接收到请求 [DELETE] /block/{}", id);
@@ -141,13 +141,9 @@ public class BlockController extends BaseController {
 
     @GetMapping()
     @ApiOperation(value = "获得宿舍楼信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNum", value = "页数", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "pageSize", value = "页大小", dataType = "String", paramType = "query")})
-    public PageResult<BlockResp> list() {
-        IPage<Block> page = getPage();
-        logger.info("接收到请求 [GET] /block, pageNum:{}, pageSize:{}", page.getCurrent(), page.getSize());
-        List<Block> blocks = blockService.page(page).getRecords();
+    public Result<List<BlockResp>> list() {
+        logger.info("接收到请求 [GET] /block");
+        List<Block> blocks = blockService.list();
         List<BlockResp> resps = new ArrayList<>();
         for (Block block : blocks) {
             BlockResp blockResp = new BlockResp();
@@ -187,11 +183,8 @@ public class BlockController extends BaseController {
 
             resps.add(blockResp);
         }
-        PageData<BlockResp> data = new PageData<>();
-        data.setCurrent(page.getCurrent());
-        data.setTotal(page.getTotal());
-        data.setRows(resps);
-        return PageResult.ok(data);
+
+        return Result.ok(resps);
     }
 }
 

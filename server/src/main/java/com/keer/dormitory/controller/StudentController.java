@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import com.keer.dormitory.core.base.BaseController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -40,12 +41,12 @@ public class StudentController extends BaseController {
 
     @PostMapping
     @ApiOperation("增加学生信息")
-    public Result add(@RequestBody Student student){
-        logger.info("接收到请求: /student [POST],data:{}",student);
-        if(studentService.getById(student.getId())!=null){
+    public Result add(@RequestBody Student student) {
+        logger.info("接收到请求: /student [POST],data:{}", student);
+        if (studentService.getById(student.getId()) != null) {
             return Result.error("学生已经存在");
         }
-        if(!studentService.save(student)){
+        if (!studentService.save(student)) {
             return Result.error("增加学生信息失败！");
         }
         return Result.ok();
@@ -53,38 +54,47 @@ public class StudentController extends BaseController {
 
     @PostMapping("/update")
     @ApiOperation("分配学生宿舍")
-    public Result update(@RequestBody Student student){
-        logger.info("接收到请求: /student [PUT],data:{}",student);
-        if(studentService.getById(student.getId())==null){
+    public Result update(@RequestBody Student student) {
+        logger.info("接收到请求: /student [PUT],data:{}", student);
+        if (studentService.getById(student.getId()) == null) {
             return Result.error("学生不存在");
         }
-        QueryWrapper<Student> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("room_id",student.getRoomId());
-        int count=studentService.count(queryWrapper);
-        Room room=roomService.getById(student.getRoomId());
-        if(count >= room.getSize()){
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("room_id", student.getRoomId());
+        int count = studentService.count(queryWrapper);
+        Room room = roomService.getById(student.getRoomId());
+        if (count >= room.getSize()) {
             return Result.error("宿舍已满");
         }
-        if(!studentService.updateById(student)){
+        if (!studentService.updateById(student)) {
             return Result.error("更新学生信息失败！");
         }
         return Result.ok();
     }
 
-    @PutMapping("/stop/{student_id}")
+    @GetMapping("/stop/{student_id}")
     @ApiOperation("学生退宿")
-    public Result stop(@PathVariable String student_id){
-        logger.info("接收到请求: /student/stop [PUT],data:{}",student_id);
-        if(studentService.getById(student_id)==null){
+    public Result stop(@PathVariable String student_id) {
+        logger.info("接收到请求: /student/stop [GET],data:{}", student_id);
+        if (studentService.getById(student_id) == null) {
             return Result.error("学生不存在");
         }
-        UpdateWrapper<Student> updateWrapper=new UpdateWrapper<>();
-        updateWrapper.eq("id",student_id);
-        updateWrapper.set("room_id",null);
-        if(!studentService.update(updateWrapper)){
+        UpdateWrapper<Student> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", student_id);
+        updateWrapper.set("room_id", null);
+        if (!studentService.update(updateWrapper)) {
             return Result.error("更新学生信息失败！");
         }
         return Result.ok();
     }
+
+    @GetMapping()
+    @ApiOperation("获取学生信息列表")
+    public Result<List<Student>> list() {
+        logger.info("接收到请求： /student [GET]");
+        List<Student> students = studentService.list();
+        return Result.ok(students);
+    }
+
 }
 

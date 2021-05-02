@@ -101,9 +101,6 @@ public class UserController extends BaseController {
     }
 
     @GetMapping
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNum", value = "页数", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "pageSize", value = "页大小", dataType = "String", paramType = "query")})
     @ApiOperation(value = "管理员  获取全部用户信息")
     public Result<List<UserInfoDTO>> list(HttpServletRequest req) {
         User loginUser = (User) req.getSession().getAttribute("userInfo");
@@ -111,15 +108,14 @@ public class UserController extends BaseController {
             logger.info("接收到请求[GET]: /user ；权限不足，user ：{}", loginUser);
             return Result.roleError();
         }
-        Page<User> page = this.getPage();
-        logger.info("接收到请求[GET]: /user, pageNum : {},pageSize:{}", page.getCurrent(), page.getSize());
+        logger.info("接收到请求[GET]: /user, ");
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.select("id", "name", "role");
         wrapper.gt("role", 0);
-        page = userService.page(page, wrapper);
-        List<User> users = page.getRecords();
+
+        List<User> users = userService.list();
         List<UserInfoDTO> userInfos = new ArrayList<>();
-        for (User user : page.getRecords()) {
+        for (User user : users) {
             UserInfoDTO userInfo = new UserInfoDTO();
             userInfo.setUserName(user.getName());
             userInfo.setRole(user.getRole());

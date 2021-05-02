@@ -9,6 +9,7 @@ import com.keer.dormitory.entity.Student;
 import com.keer.dormitory.entity.Task;
 import com.keer.dormitory.service.StudentService;
 import com.keer.dormitory.service.TaskService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/task")
+@Api(tags = "任务管理接口")
 public class TaskController extends BaseController {
     private static Logger logger = LoggerFactory.getLogger(TaskController.class);
 
@@ -41,7 +43,7 @@ public class TaskController extends BaseController {
     @PostMapping("/update-info")
     @ResponseBody
     public Result<Integer> updateTask(@RequestBody Task data) {
-        logger.info("接收到请求 /task/update [POST] data:{}",data);
+        logger.info("接收到请求 /task/update [POST] data:{}", data);
         if (taskService.updateById(data)) {
             return Result.ok();
         }
@@ -52,7 +54,7 @@ public class TaskController extends BaseController {
     @GetMapping("/run/{taskId}")
     @ResponseBody
     public Result runTask(@PathVariable Integer taskId) {
-        logger.info("接收到请求 /task/run/{} [GET] ",taskId);
+        logger.info("接收到请求 /task/run/{} [GET] ", taskId);
         Task task = taskService.getById(taskId);
         taskService.sortRoom(task, 0);
         taskService.sortRoom(task, 1);
