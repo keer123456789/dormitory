@@ -8,10 +8,9 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.keer.dormitory.core.model.PageData;
 import com.keer.dormitory.core.model.PageResult;
 import com.keer.dormitory.core.model.Result;
-import com.keer.dormitory.dto.BlockInfoReq;
-import com.keer.dormitory.dto.BlockResp;
-import com.keer.dormitory.dto.RoomInfoDTO;
+import com.keer.dormitory.dto.*;
 import com.keer.dormitory.entity.*;
+import com.keer.dormitory.entity.Floor;
 import com.keer.dormitory.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -185,6 +184,30 @@ public class BlockController extends BaseController {
         }
 
         return Result.ok(resps);
+    }
+
+    @GetMapping("/menu-info")
+    @ApiOperation(value = "获得菜单栏信息")
+    public Result<BlockFloorInfo> getMenuInfo() {
+        logger.info("接收到请求 /block/menu-info [GET]");
+        List<Block> blocks = blockService.list();
+        if (blocks.isEmpty()) {
+            return Result.ok();
+        }
+        BlockFloorInfo blockFloorInfo = new BlockFloorInfo();
+        for (Block block : blocks) {
+            Menu blockMenu = new Menu(block.getName(), block.getId() + "");
+            blockFloorInfo.addBlockMenu(blockMenu);
+
+            QueryWrapper<Floor> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("block_id", block.getId());
+            List<Floor> floors = floorService.list(queryWrapper);
+            for (Floor floor : floors) {
+                Menu floorMenu = new Menu(floor.getName(), floor.getId() + "");
+                blockFloorInfo.putFloor(block.getId() + "", floorMenu);
+            }
+        }
+        return Result.ok(blockFloorInfo);
     }
 }
 

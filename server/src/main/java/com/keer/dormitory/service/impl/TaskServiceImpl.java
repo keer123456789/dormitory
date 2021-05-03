@@ -87,11 +87,11 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
                 }
                 students.get(index).setRoomId(room.getId());
                 students.get(index).setBedNum(i + 1);
-                students.get(index).setLocationX(room.getLocationX());
+                students.get(index).setX(room.getX());
                 if (Integer.parseInt(room.getName()) % 2 == 0) {
-                    students.get(index).setLocationY((Integer.parseInt(room.getLocationY()) + (i + 1) * bedDistance) + "");
+                    students.get(index).setY((Integer.parseInt(room.getY()) + (i + 1) * bedDistance) + "");
                 } else {
-                    students.get(index).setLocationY((upStartY + i * bedDistance) + "");
+                    students.get(index).setY((upStartY + i * bedDistance) + "");
                 }
                 empty--;
                 index++;

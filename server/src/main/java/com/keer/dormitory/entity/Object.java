@@ -30,10 +30,10 @@ public class Object implements Serializable {
     private Integer floorId;
 
     @ApiModelProperty(value = "楼层平面图中的标记位置")
-    private String locationX;
+    private String x;
 
     @ApiModelProperty(value = "楼层平面图中的标记位置")
-    private String locationY;
+    private String y;
 
     @ApiModelProperty(value = "物品类别")
     private String type;
@@ -63,20 +63,20 @@ public class Object implements Serializable {
         this.floorId = floorId;
     }
 
-    public String getLocationX() {
-        return locationX;
+    public String getX() {
+        return x;
     }
 
-    public void setLocationX(String locationX) {
-        this.locationX = locationX;
+    public void setX(String x) {
+        this.x = x;
     }
 
-    public String getLocationY() {
-        return locationY;
+    public String getY() {
+        return y;
     }
 
-    public void setLocationY(String locationY) {
-        this.locationY = locationY;
+    public void setY(String y) {
+        this.y = y;
     }
 
     public String getType() {
@@ -93,8 +93,8 @@ public class Object implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", floorId=" + floorId +
-                ", locationX='" + locationX + '\'' +
-                ", locationY='" + locationY + '\'' +
+                ", x='" + x + '\'' +
+                ", y='" + y + '\'' +
                 ", type='" + type + '\'' +
                 '}';
     }

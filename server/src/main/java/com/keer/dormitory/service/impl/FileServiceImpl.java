@@ -124,8 +124,8 @@ public class FileServiceImpl implements FileService {
                 if (downStopXs.contains(x)) {
                     continue;
                 }
-                downRooms.get(i).setLocationX(x.toString());
-                downRooms.get(i).setLocationY(downStartY + "");
+                downRooms.get(i).setX(x.toString());
+                downRooms.get(i).setY(downStartY + "");
                 i++;
             }
             roomService.updateBatchById(downRooms);
@@ -140,8 +140,8 @@ public class FileServiceImpl implements FileService {
                 if (upStopXs.contains(x)) {
                     continue;
                 }
-                upRooms.get(i).setLocationX(x.toString());
-                upRooms.get(i).setLocationY(upStartY * roomSize + "");
+                upRooms.get(i).setX(x.toString());
+                upRooms.get(i).setY(upStartY * roomSize + "");
                 i++;
             }
             roomService.updateBatchById(upRooms);

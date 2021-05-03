@@ -36,10 +36,10 @@ public class Room implements Serializable {
     private Integer floorId;
 
     @ApiModelProperty(value = "平面图位置 x轴坐标")
-    private String locationX;
+    private String x;
 
     @ApiModelProperty(value = "平面图位置 y轴坐标")
-    private String locationY;
+    private String y;
 
 
     public Integer getId() {
@@ -82,20 +82,20 @@ public class Room implements Serializable {
         this.floorId = floorId;
     }
 
-    public String getLocationX() {
-        return locationX;
+    public String getX() {
+        return x;
     }
 
-    public void setLocationX(String locationX) {
-        this.locationX = locationX;
+    public void setX(String x) {
+        this.x = x;
     }
 
-    public String getLocationY() {
-        return locationY;
+    public String getY() {
+        return y;
     }
 
-    public void setLocationY(String locationY) {
-        this.locationY = locationY;
+    public void setY(String y) {
+        this.y = y;
     }
 
     @Override
@@ -106,8 +106,8 @@ public class Room implements Serializable {
                 ", size=" + size +
                 ", emptySize=" + emptySize +
                 ", floorId=" + floorId +
-                ", locationX='" + locationX + '\'' +
-                ", locationY='" + locationY + '\'' +
+                ", locationX='" + x + '\'' +
+                ", locationY='" + y + '\'' +
                 '}';
     }
 }

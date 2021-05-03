@@ -68,10 +68,10 @@ public class Student implements Serializable {
     private Integer taskId;
 
     @ApiModelProperty(value = "平面图位置 x轴坐标")
-    private String locationX;
+    private String x;
 
     @ApiModelProperty(value = "平面图位置 y轴坐标")
-    private String locationY;
+    private String y;
 
     public String getId() {
         return id;
@@ -201,20 +201,20 @@ public class Student implements Serializable {
         this.taskId = taskId;
     }
 
-    public String getLocationX() {
-        return locationX;
+    public String getX() {
+        return x;
     }
 
-    public void setLocationX(String locationX) {
-        this.locationX = locationX;
+    public void setX(String x) {
+        this.x = x;
     }
 
-    public String getLocationY() {
-        return locationY;
+    public String getY() {
+        return y;
     }
 
-    public void setLocationY(String locationY) {
-        this.locationY = locationY;
+    public void setY(String y) {
+        this.y = y;
     }
 
     @Override
@@ -235,8 +235,8 @@ public class Student implements Serializable {
                 ", address='" + address + '\'' +
                 ", state=" + state +
                 ", taskId=" + taskId +
-                ", locationX='" + locationX + '\'' +
-                ", locationY='" + locationY + '\'' +
+                ", locationX='" + x + '\'' +
+                ", locationY='" + y + '\'' +
                 '}';
     }
 }

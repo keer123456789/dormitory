@@ -58,8 +58,8 @@ public class FloorController extends BaseController {
             Location location = new Location();
             location.setType("宿舍坐标");
             location.setName(room.getName());
-            location.setX(Integer.parseInt(room.getLocationX()));
-            location.setY(Integer.parseInt(room.getLocationY()));
+            location.setX(Integer.parseInt(room.getX()));
+            location.setY(Integer.parseInt(room.getY()));
             imageInfo.addRoomLocation(location);
         }
         List<Integer> roomIds = rooms.stream().map(Room::getId).collect(Collectors.toList());
@@ -70,8 +70,8 @@ public class FloorController extends BaseController {
             Location location = new Location();
             location.setType("学生坐标");
             location.setName(student.getName());
-            location.setX(Integer.parseInt(student.getLocationX()));
-            location.setY(Integer.parseInt(student.getLocationY()));
+            location.setX(Integer.parseInt(student.getX()));
+            location.setY(Integer.parseInt(student.getY()));
             imageInfo.addStudentLocation(location);
         }
         return Result.ok(imageInfo);
