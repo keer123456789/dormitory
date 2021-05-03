@@ -67,6 +67,11 @@ public class Student implements Serializable {
     @ApiModelProperty(value = "任务id 表示学生属于的批次")
     private Integer taskId;
 
+    @ApiModelProperty(value = "平面图位置 x轴坐标")
+    private String locationX;
+
+    @ApiModelProperty(value = "平面图位置 y轴坐标")
+    private String locationY;
 
     public String getId() {
         return id;
@@ -196,24 +201,42 @@ public class Student implements Serializable {
         this.taskId = taskId;
     }
 
+    public String getLocationX() {
+        return locationX;
+    }
+
+    public void setLocationX(String locationX) {
+        this.locationX = locationX;
+    }
+
+    public String getLocationY() {
+        return locationY;
+    }
+
+    public void setLocationY(String locationY) {
+        this.locationY = locationY;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
-                "id=" + id +
-                ", name=" + name +
-                ", identityNum=" + identityNum +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", identityNum='" + identityNum + '\'' +
                 ", roomId=" + roomId +
                 ", bedNum=" + bedNum +
-                ", nation=" + nation +
+                ", nation='" + nation + '\'' +
                 ", sex=" + sex +
-                ", academy=" + academy +
-                ", major=" + major +
-                ", classNum=" + classNum +
-                ", region=" + region +
-                ", phoneNum=" + phoneNum +
-                ", address=" + address +
+                ", academy='" + academy + '\'' +
+                ", major='" + major + '\'' +
+                ", classNum='" + classNum + '\'' +
+                ", region='" + region + '\'' +
+                ", phoneNum='" + phoneNum + '\'' +
+                ", address='" + address + '\'' +
                 ", state=" + state +
                 ", taskId=" + taskId +
-                "}";
+                ", locationX='" + locationX + '\'' +
+                ", locationY='" + locationY + '\'' +
+                '}';
     }
 }

@@ -53,18 +53,28 @@ public class StudentController extends BaseController {
     }
 
     @PostMapping("/update")
-    @ApiOperation("分配学生宿舍")
+    @ApiOperation("更新学生信息")
     public Result update(@RequestBody Student student) {
-        logger.info("接收到请求: /student [PUT],data:{}", student);
+        logger.info("接收到请求: /student/update [POST],data:{}", student);
         if (studentService.getById(student.getId()) == null) {
             return Result.error("学生不存在");
         }
-        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("room_id", student.getRoomId());
-        int count = studentService.count(queryWrapper);
-        Room room = roomService.getById(student.getRoomId());
-        if (count >= room.getSize()) {
-            return Result.error("宿舍已满");
+        Student oldStudent = studentService.getById(student.getId());
+        if (!student.getRoomId().equals(oldStudent.getRoomId())) {
+            QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("room_id", student.getRoomId());
+            int count = studentService.count(queryWrapper);
+
+            Room newRoom = roomService.getById(student.getRoomId());
+            if (count >= newRoom.getSize()) {
+                return Result.error("宿舍已满");
+            }
+            newRoom.setEmptySize(newRoom.getEmptySize() - 1);
+            roomService.updateById(newRoom);
+
+            Room oldRoom = roomService.getById(oldStudent.getRoomId());
+            oldRoom.setEmptySize(oldRoom.getEmptySize() + 1);
+            roomService.updateById(oldRoom);
         }
         if (!studentService.updateById(student)) {
             return Result.error("更新学生信息失败！");

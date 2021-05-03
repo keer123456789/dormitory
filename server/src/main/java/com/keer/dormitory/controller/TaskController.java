@@ -71,13 +71,30 @@ public class TaskController extends BaseController {
         BlockSortInfo blockSortInfo = new BlockSortInfo();
         blockSortInfo.setFemaleInfo(femaleSortInfo);
         blockSortInfo.setMaleInfo(maleSortInfo);
-        blockSortInfo.setRoomSize(task.getRoomSize());
+        blockSortInfo.setRoomSizeFemale(task.getRoomSizeFemale());
+        blockSortInfo.setRoomSizeMale(task.getRoomSizeMale());
 
         QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("task_id", task.getId());
-        int studentNum = studentService.count(queryWrapper);
-        blockSortInfo.setStudentNum(studentNum);
-        blockSortInfo.setRoomNum(studentNum / task.getRoomSize() + 1);
+        queryWrapper.eq("sex", 0);
+        int maleNum = studentService.count(queryWrapper);
+        blockSortInfo.setMaleNum(maleNum);
+        if (maleNum % task.getRoomSizeMale() == 0) {
+            blockSortInfo.setRoomNumMale(maleNum / task.getRoomSizeMale());
+        } else {
+            blockSortInfo.setRoomNumMale(maleNum / task.getRoomSizeMale() + 1);
+        }
+
+        queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("task_id", task.getId());
+        queryWrapper.eq("sex", 1);
+        int femaleNum = studentService.count(queryWrapper);
+        blockSortInfo.setFemaleNum(femaleNum);
+        if (femaleNum % task.getRoomSizeFemale() == 0) {
+            blockSortInfo.setRoomNumFemale(femaleNum / task.getRoomSizeFemale());
+        } else {
+            blockSortInfo.setRoomNumFemale(femaleNum / task.getRoomSizeFemale() + 1);
+        }
         return Result.ok(blockSortInfo);
     }
 }

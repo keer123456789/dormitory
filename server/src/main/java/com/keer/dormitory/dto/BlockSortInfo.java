@@ -3,26 +3,45 @@ package com.keer.dormitory.dto;
 import java.util.List;
 
 public class BlockSortInfo {
-    private int roomSize;
-    private int roomNum;
-    private int studentNum;
+    private int roomSizeMale;
+    private int roomSizeFemale;
+    private int roomNumMale;
+    private int roomNumFemale;
+    private int maleNum;
+    private int femaleNum;
     private List<SortInfo> maleInfo;
     private List<SortInfo> femaleInfo;
 
-    public int getRoomNum() {
-        return roomNum;
+    public int getRoomNumMale() {
+        return roomNumMale;
     }
 
-    public void setRoomNum(int roomNum) {
-        this.roomNum = roomNum;
+    public void setRoomNumMale(int roomNumMale) {
+        this.roomNumMale = roomNumMale;
     }
 
-    public int getRoomSize() {
-        return roomSize;
+    public int getRoomNumFemale() {
+        return roomNumFemale;
     }
 
-    public void setRoomSize(int roomSize) {
-        this.roomSize = roomSize;
+    public void setRoomNumFemale(int roomNumFemale) {
+        this.roomNumFemale = roomNumFemale;
+    }
+
+    public int getRoomSizeMale() {
+        return roomSizeMale;
+    }
+
+    public void setRoomSizeMale(int roomSizeMale) {
+        this.roomSizeMale = roomSizeMale;
+    }
+
+    public int getRoomSizeFemale() {
+        return roomSizeFemale;
+    }
+
+    public void setRoomSizeFemale(int roomSizeFemale) {
+        this.roomSizeFemale = roomSizeFemale;
     }
 
     public List<SortInfo> getMaleInfo() {
@@ -41,20 +60,31 @@ public class BlockSortInfo {
         this.femaleInfo = femaleInfo;
     }
 
-    public int getStudentNum() {
-        return studentNum;
+    public int getMaleNum() {
+        return maleNum;
     }
 
-    public void setStudentNum(int studentNum) {
-        this.studentNum = studentNum;
+    public void setMaleNum(int maleNum) {
+        this.maleNum = maleNum;
+    }
+
+    public int getFemaleNum() {
+        return femaleNum;
+    }
+
+    public void setFemaleNum(int femaleNum) {
+        this.femaleNum = femaleNum;
     }
 
     @Override
     public String toString() {
         return "BlockSortInfo{" +
-                "roomSize=" + roomSize +
-                ", roomNum=" + roomNum +
-                ", studentNum=" + studentNum +
+                "roomSizeMale=" + roomSizeMale +
+                ", roomSizeFemale=" + roomSizeFemale +
+                ", roomNumMale=" + roomNumMale +
+                ", roomNumFemale=" + roomNumFemale +
+                ", maleNum=" + maleNum +
+                ", femaleNum=" + femaleNum +
                 ", maleInfo=" + maleInfo +
                 ", femaleInfo=" + femaleInfo +
                 '}';

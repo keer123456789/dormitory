@@ -30,10 +30,13 @@ public class Object implements Serializable {
     private Integer floorId;
 
     @ApiModelProperty(value = "楼层平面图中的标记位置")
-    private String location;
+    private String locationX;
 
-    @ApiModelProperty(value = "物品类别   0-消防器材 1-灯 ")
-    private Integer type;
+    @ApiModelProperty(value = "楼层平面图中的标记位置")
+    private String locationY;
+
+    @ApiModelProperty(value = "物品类别")
+    private String type;
 
 
     public Integer getId() {
@@ -60,30 +63,39 @@ public class Object implements Serializable {
         this.floorId = floorId;
     }
 
-    public String getLocation() {
-        return location;
+    public String getLocationX() {
+        return locationX;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLocationX(String locationX) {
+        this.locationX = locationX;
     }
 
-    public Integer getType() {
+    public String getLocationY() {
+        return locationY;
+    }
+
+    public void setLocationY(String locationY) {
+        this.locationY = locationY;
+    }
+
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
 
     @Override
     public String toString() {
         return "Object{" +
-        "id=" + id +
-        ", name=" + name +
-        ", floorId=" + floorId +
-        ", location=" + location +
-        ", type=" + type +
-        "}";
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", floorId=" + floorId +
+                ", locationX='" + locationX + '\'' +
+                ", locationY='" + locationY + '\'' +
+                ", type='" + type + '\'' +
+                '}';
     }
 }

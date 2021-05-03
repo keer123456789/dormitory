@@ -178,7 +178,7 @@ public class BlockController extends BaseController {
             }
             List<Integer> roomIds = rooms.stream().map(Room::getId).collect(Collectors.toList());
             QueryWrapper<Student> studentQueryWrapper = new QueryWrapper<>();
-            studentQueryWrapper.in("room_id", floorIds);
+            studentQueryWrapper.in("room_id", roomIds);
             blockResp.setStudentNum(studentService.count(studentQueryWrapper));
 
             resps.add(blockResp);

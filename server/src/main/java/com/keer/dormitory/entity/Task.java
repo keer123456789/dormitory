@@ -24,8 +24,11 @@ public class Task implements Serializable {
     private Integer id;
 
 
-    @ApiModelProperty(value = "房间大小")
-    private Integer roomSize;
+    @ApiModelProperty(value = "男生房间大小")
+    private Integer roomSizeMale;
+
+    @ApiModelProperty(value = "女生房间大小")
+    private Integer roomSizeFemale;
 
     @ApiModelProperty(value = "线程id")
     private String threadId;
@@ -54,12 +57,20 @@ public class Task implements Serializable {
         this.id = id;
     }
 
-    public Integer getRoomSize() {
-        return roomSize;
+    public Integer getRoomSizeMale() {
+        return roomSizeMale;
     }
 
-    public void setRoomSize(Integer roomSize) {
-        this.roomSize = roomSize;
+    public void setRoomSizeMale(Integer roomSizeMale) {
+        this.roomSizeMale = roomSizeMale;
+    }
+
+    public Integer getRoomSizeFemale() {
+        return roomSizeFemale;
+    }
+
+    public void setRoomSizeFemale(Integer roomSizeFemale) {
+        this.roomSizeFemale = roomSizeFemale;
     }
 
     public String getThreadId() {
@@ -114,7 +125,8 @@ public class Task implements Serializable {
     public String toString() {
         return "Task{" +
                 "id=" + id +
-                ", roomSize=" + roomSize +
+                ", roomSizeMale=" + roomSizeMale +
+                ", roomSizeFemale=" + roomSizeFemale +
                 ", threadId='" + threadId + '\'' +
                 ", status=" + status +
                 ", filePath='" + filePath + '\'' +

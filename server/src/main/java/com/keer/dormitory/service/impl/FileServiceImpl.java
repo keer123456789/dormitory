@@ -5,22 +5,22 @@ import com.keer.dormitory.constant.ExeclConstant;
 import com.keer.dormitory.dto.SortInfo;
 import com.keer.dormitory.entity.*;
 import com.keer.dormitory.service.*;
+import io.swagger.models.Info;
 import io.swagger.models.auth.In;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.metadata.HsqlTableMetaDataProvider;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +41,25 @@ public class FileServiceImpl implements FileService {
     @Resource
     private TaskService taskService;
 
+    @Value("${image-location.type1.room-num}")
+    private int roomNum;
+    @Value("${image-location.type1.room-distance}")
+    private int roomDistance;
+    @Value("${image-location.type1.room-size}")
+    private int roomSize;
+    @Value("${image-location.type1.up.stop-x}")
+    private Integer[] upStopX;
+    @Value("${image-location.type1.down.stop-x}")
+    private Integer[] downStopX;
+    @Value("${image-location.type1.up.start-x}")
+    private int upStartX;
+    @Value("${image-location.type1.up.start-y}")
+    private int upStartY;
+    @Value("${image-location.type1.down.start-x}")
+    private int downStartX;
+    @Value("${image-location.type1.down.start-y}")
+    private int downStartY;
+
     @Override
     public void asyncCreateBlock(String path) {
         Workbook wb = null;
@@ -50,6 +69,7 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
         }
         Sheet blockInfos = wb.getSheet(ExeclConstant.SHEET_BLOCKINFO);
+        List<Floor> allfloors = new ArrayList<>();
         for (int i = 1; i <= blockInfos.getLastRowNum(); i++) {
             Row row = blockInfos.getRow(i);
             Block block = new Block();
@@ -59,14 +79,15 @@ public class FileServiceImpl implements FileService {
             block.setSex(row.getCell(4).getStringCellValue());
             blockService.save(block);
 
-            int floorNum = (int) row.getCell(3).getNumericCellValue();
             List<Floor> floors = new ArrayList<>();
+            int floorNum = (int) row.getCell(3).getNumericCellValue();
             for (int j = 0; j < floorNum; j++) {
                 Floor floor = new Floor();
                 floor.setName((j + 1) + "层");
                 floor.setFloorNum(j + 1);
                 floor.setBlockId(block.getId());
                 floors.add(floor);
+                allfloors.add(floor);
             }
             floorService.saveBatch(floors);
             Map<Integer, Integer> numToId = floors.stream().collect(Collectors.toMap(Floor::getFloorNum, Floor::getId));
@@ -91,6 +112,40 @@ public class FileServiceImpl implements FileService {
             wb.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        for (Floor floor : allfloors) {
+            QueryWrapper<Room> queryWrapperDown = new QueryWrapper<>();
+            queryWrapperDown.eq("floor_id", floor.getId());
+            queryWrapperDown.eq("mod(`name`,2)", 0);
+            List<Room> downRooms = roomService.list(queryWrapperDown);
+            for (int i = 0, j = 0; j < roomNum && i < downRooms.size(); j++) {
+                Integer x = downStartX + j * roomDistance;
+                List<Integer> downStopXs = Arrays.asList(downStopX);
+                if (downStopXs.contains(x)) {
+                    continue;
+                }
+                downRooms.get(i).setLocationX(x.toString());
+                downRooms.get(i).setLocationY(downStartY + "");
+                i++;
+            }
+            roomService.updateBatchById(downRooms);
+
+            QueryWrapper<Room> queryWrapperUp = new QueryWrapper<>();
+            queryWrapperUp.eq("floor_id", floor.getId());
+            queryWrapperUp.eq("mod(`name`,2)", 1);
+            List<Room> upRooms = roomService.list(queryWrapperUp);
+            for (int i = 0, j = 0; j < roomNum && i < upRooms.size(); j++) {
+                Integer x = upStartX + j * roomDistance;
+                List<Integer> upStopXs = Arrays.asList(upStopX);
+                if (upStopXs.contains(x)) {
+                    continue;
+                }
+                upRooms.get(i).setLocationX(x.toString());
+                upRooms.get(i).setLocationY(upStartY * roomSize + "");
+                i++;
+            }
+            roomService.updateBatchById(upRooms);
+
         }
     }
 
@@ -141,11 +196,7 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
         }
 
-//        sortRoom(task, 0);
-//        sortRoom(task, 1);
-
     }
-
 
 
     public static void main(String[] args) {
