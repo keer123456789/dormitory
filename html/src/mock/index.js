@@ -1,7 +1,7 @@
 import Mock from 'mockjs'
 import '@/mock/user/current'
 
-import '@/mock/user/login'
+// import '@/mock/user/login'
 
 import '@/mock/user/routes'
 import '@/mock/goods'

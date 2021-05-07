@@ -42,16 +42,6 @@
             ]"
           />
         </a-form-item>
-        <a-form-item label="角色">
-          <a-input
-            v-decorator="[
-              'role',
-              {
-                rules: [{ required: true, message: '请选择角色！' }],
-              },
-            ]"
-          />
-        </a-form-item>
         <a-form-item label="宿舍楼id">
           <a-input
             v-decorator="[
@@ -78,7 +68,7 @@
 </template>
 
 <script>
-import { users } from "@/services/dataSource";
+import { users, editUser } from "@/services/dataSource";
 
 const columns = [
     {
@@ -150,7 +140,6 @@ export default {
       this.$nextTick(() => {
         this.form.setFieldsValue({
           name: text.name,
-          role: text.role,
           buildId: text.buildId,
           buildName: text.buildName,
           xlh: text.xlh,
@@ -166,6 +155,15 @@ export default {
           this.confirmLoading = false;
           return;
         }
+        editUser(values).then((result)=>{
+          console.log(result)
+          if(result.data.code == 200){
+            this.getUsers();
+            this.$message.info("修改成功！");
+          } else{
+            this.$message.info(result.data.msg);
+          }
+        })
         console.log("form 表单内容: ", values);
         form.resetFields();
         this.visible = false;

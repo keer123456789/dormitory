@@ -1,22 +1,24 @@
 package com.keer.dormitory.dto;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 用户列表信息
  */
 public class UserInfoDTO {
-    private String userName;
+    private String name;
     private Integer role;
-    private List<BlockInfo> blockInfos;
+    private String buildName;
+    private Integer buildId;
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getRole() {
@@ -27,55 +29,29 @@ public class UserInfoDTO {
         this.role = role;
     }
 
-    public List<BlockInfo> getBlockInfos() {
-        return blockInfos;
+    public String getBuildName() {
+        return buildName;
     }
 
-    public void setBlockInfos(List<BlockInfo> blockInfos) {
-        this.blockInfos = blockInfos;
+    public void setBuildName(String buildName) {
+        this.buildName = buildName;
     }
 
-    public void addBlockInfo(Integer blockId,String blockName){
-        this.blockInfos.add(new BlockInfo(blockId,blockName));
+    public Integer getBuildId() {
+        return buildId;
+    }
+
+    public void setBuildId(Integer buildId) {
+        this.buildId = buildId;
     }
 
     @Override
     public String toString() {
-        return "UserInfoDTO{}";
+        return "UserInfoDTO{" +
+                "name='" + name + '\'' +
+                ", role=" + role +
+                ", buildName='" + buildName + '\'' +
+                ", buildId=" + buildId +
+                '}';
     }
-
-    public class BlockInfo{
-        private Integer blockId;
-        private String blockName;
-
-        public BlockInfo(Integer blockId,String blockName){
-            this.blockId=blockId;
-            this.blockName=blockName;
-        }
-
-        public Integer getBlockId() {
-            return blockId;
-        }
-
-        public void setBlockId(Integer blockId) {
-            this.blockId = blockId;
-        }
-
-        public String getBlockName() {
-            return blockName;
-        }
-
-        public void setBlockName(String blockName) {
-            this.blockName = blockName;
-        }
-
-        @Override
-        public String toString() {
-            return "BlockInfo{" +
-                    "blockId='" + blockId + '\'' +
-                    ", blockName='" + blockName + '\'' +
-                    '}';
-        }
-    }
-
 }

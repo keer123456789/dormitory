@@ -1,4 +1,4 @@
-import {GOODS, USERS, MAPDATA, OBJECT, GETBUILDDATA, STUDENT, GETSTUDENT, STOP, UPDATE, GETOBJECT, DELOBJECT} from './api'
+import {GOODS, USERS, MAPDATA, OBJECT, GETBUILDDATA, STUDENT, GETSTUDENT, STOP, UPDATE, GETOBJECT, DELOBJECT, EDITUSER } from './api'
 import {METHOD, request} from '@/utils/request'
 
 export async function goodsList(params) {
@@ -49,6 +49,10 @@ export async function getObject(){
 
 export async function delObject(params) {
   return request(DELOBJECT, METHOD.POST, params)
+}
+
+export async function editUser(params) {
+  return request(EDITUSER, METHOD.POST, params)
 }
 
 export default {goodsList, users}

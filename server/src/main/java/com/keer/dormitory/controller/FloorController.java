@@ -6,9 +6,11 @@ import com.keer.dormitory.core.model.Result;
 import com.keer.dormitory.dto.ImageInfo;
 import com.keer.dormitory.dto.Location;
 import com.keer.dormitory.entity.Floor;
+import com.keer.dormitory.entity.Object;
 import com.keer.dormitory.entity.Room;
 import com.keer.dormitory.entity.Student;
 import com.keer.dormitory.service.FloorService;
+import com.keer.dormitory.service.ObjectService;
 import com.keer.dormitory.service.RoomService;
 import com.keer.dormitory.service.StudentService;
 import io.swagger.annotations.ApiModelProperty;
@@ -42,6 +44,8 @@ public class FloorController extends BaseController {
     private RoomService roomService;
     @Resource
     private StudentService studentService;
+    @Resource
+    private ObjectService objectService;
 
     @GetMapping("/image-info")
     @ApiOperation("获取楼层平面图")
@@ -56,8 +60,8 @@ public class FloorController extends BaseController {
         List<Room> rooms = roomService.list(roomQueryWrapper);
         for (Room room : rooms) {
             Location location = new Location();
-            location.setType("宿舍坐标");
-            location.setName(room.getName());
+            location.setName("宿舍坐标");
+            location.setType(room.getName());
             location.setX(Integer.parseInt(room.getX()));
             location.setY(Integer.parseInt(room.getY()));
             imageInfo.addRoomLocation(location);
@@ -68,12 +72,24 @@ public class FloorController extends BaseController {
         List<Student> students = studentService.list(studentQueryWrapper);
         for (Student student : students) {
             Location location = new Location();
-            location.setType("学生坐标");
-            location.setName(student.getName());
+            location.setName("学生坐标");
+            location.setType(student.getName());
             location.setX(Integer.parseInt(student.getX()));
             location.setY(Integer.parseInt(student.getY()));
             imageInfo.addStudentLocation(location);
         }
+        QueryWrapper<Object> objectQueryWrapper = new QueryWrapper<>();
+        objectQueryWrapper.eq("floor_id", floor.getId());
+        List<Object> objects = objectService.list(objectQueryWrapper);
+        for (Object object : objects) {
+            Location location = new Location();
+            location.setType(object.getName());
+            location.setName(object.getName());
+            location.setY(Integer.parseInt(object.getY()));
+            location.setX(Integer.parseInt(object.getX()));
+            imageInfo.addObjectLocation(location);
+        }
+        System.out.println(imageInfo.toString());
         return Result.ok(imageInfo);
     }
 

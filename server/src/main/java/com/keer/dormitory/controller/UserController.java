@@ -76,7 +76,7 @@ public class UserController extends BaseController {
         resultJson.put("expireAt", getTomorrow());
         resultJson.put("permissions", JSON.parse("[{\"id\":\"queryForm\",\"operation\":[\"add\",\"edit\"]}]"));
         resultJson.put("roles", JSON.parse("[{\"id\":\"admin\",\"operation\":[\"add\",\"edit\",\"delete\"]}]"));
-        resultJson.put("user",JSON.parse("{\"name\":\""+user.getName()+"\"}"));
+        resultJson.put("user", JSON.parse("{\"name\":\"" + user.getName() + "\"}"));
         return Result.ok(resultJson);
     }
 
@@ -103,31 +103,30 @@ public class UserController extends BaseController {
     @GetMapping
     @ApiOperation(value = "管理员  获取全部用户信息")
     public Result<List<UserInfoDTO>> list(HttpServletRequest req) {
-        User loginUser = (User) req.getSession().getAttribute("userInfo");
-        if (loginUser == null || loginUser.getRole() != 0) {
-            logger.info("接收到请求[GET]: /user ；权限不足，user ：{}", loginUser);
-            return Result.roleError();
-        }
+//        User loginUser = (User) req.getSession().getAttribute("userInfo");
+//        if (loginUser == null || loginUser.getRole() != 0) {
+//            logger.info("接收到请求[GET]: /user ；权限不足，user ：{}", loginUser);
+//            return Result.roleError();
+//        }
         logger.info("接收到请求[GET]: /user, ");
-        QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.select("id", "name", "role");
-        wrapper.gt("role", 0);
-
-        List<User> users = userService.list();
         List<UserInfoDTO> userInfos = new ArrayList<>();
-        for (User user : users) {
-            UserInfoDTO userInfo = new UserInfoDTO();
-            userInfo.setUserName(user.getName());
-            userInfo.setRole(user.getRole());
-            QueryWrapper<Block> blockWrapper = new QueryWrapper();
-            blockWrapper.eq("manager_id", user.getId());
-            List<Block> blocks = blockService.list(blockWrapper);
-            if (!blocks.isEmpty()) {
-                for (Block block : blockService.list(blockWrapper)) {
-                    userInfo.addBlockInfo(block.getId(), block.getName());
-                }
+
+        List<Block> blocks = blockService.list();
+        for (Block block : blocks) {
+            UserInfoDTO userInfoDTO = new UserInfoDTO();
+            userInfoDTO.setBuildName(block.getName());
+            userInfoDTO.setBuildId(block.getId());
+
+            QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("id", block.getManagerId());
+            User user = userService.getOne(queryWrapper);
+            if (user != null) {
+                userInfoDTO.setName(user.getName());
+                userInfoDTO.setRole(user.getRole());
+
             }
-            userInfos.add(userInfo);
+
+            userInfos.add(userInfoDTO);
         }
         return Result.ok(userInfos);
     }
@@ -135,27 +134,28 @@ public class UserController extends BaseController {
     @PostMapping
     @ApiOperation(value = "管理员  给宿管分配宿舍楼")
     public Result setBlockManager(@RequestBody SetBlockManagerReq data, HttpServletRequest req) {
-        User loginUser = (User) req.getSession().getAttribute("userInfo");
-        if (loginUser == null || loginUser.getRole() != 0) {
-            logger.info("接收到请求[POST]: /user ；权限不足，user ：{}", loginUser);
-            return Result.roleError();
-        }
+
+//        User loginUser = (User) req.getSession().getAttribute("userInfo");
+//        if (loginUser == null || loginUser.getRole() != 0) {
+//            logger.info("接收到请求[POST]: /user ；权限不足，user ：{}", loginUser);
+//            return Result.roleError();
+//        }
         logger.info("接收到请求[POST]: /user ；data：{}", data);
         QueryWrapper<User> userWrapper = new QueryWrapper();
-        userWrapper.eq("name", data.getUserName());
+        userWrapper.eq("name", data.getName());
         User user = userService.getOne(userWrapper);
         if (user == null) {
             return Result.error("用户不存在");
         }
 
         QueryWrapper<Block> blockWrapper = new QueryWrapper();
-        blockWrapper.in("id", data.getBlock());
-        if (blockService.count(blockWrapper) != data.getBlock().size()) {
+        blockWrapper.eq("id", data.getBuildId());
+        if (blockService.count(blockWrapper) == 0) {
             return Result.error("有错误的宿舍楼id，请检查！！");
         }
         UpdateWrapper<Block> updateWrapper = new UpdateWrapper();
         updateWrapper.set("manager_id", user.getId());
-        updateWrapper.in("id", data.getBlock());
+        updateWrapper.eq("id", data.getBuildId());
         if (blockService.update(updateWrapper)) {
             return Result.ok();
         } else {

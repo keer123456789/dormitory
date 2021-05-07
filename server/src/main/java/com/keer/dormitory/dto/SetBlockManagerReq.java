@@ -6,30 +6,30 @@ import java.util.List;
  * /user POST接口 对象
  */
 public class SetBlockManagerReq {
-    private String userName;
-    private List<Integer> block;
+    private String name;
+    private Integer buildId;
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public List<Integer> getBlock() {
-        return block;
+    public Integer getBuildId() {
+        return buildId;
     }
 
-    public void setBlock(List<Integer> block) {
-        this.block = block;
+    public void setBuildId(Integer buildId) {
+        this.buildId = buildId;
     }
 
     @Override
     public String toString() {
-        return "SetBlockManagerDTO{" +
-                "userName='" + userName + '\'' +
-                ", block=" + block +
+        return "SetBlockManagerReq{" +
+                "name='" + name + '\'' +
+                ", buildId=" + buildId +
                 '}';
     }
 }

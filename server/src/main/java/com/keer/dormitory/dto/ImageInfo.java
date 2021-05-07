@@ -6,6 +6,7 @@ import java.util.List;
 public class ImageInfo {
     private List<Location> student;
     private List<Location> room;
+    private List<Location> object;
 
     public List<Location> getStudent() {
         return student;
@@ -23,18 +24,33 @@ public class ImageInfo {
         this.room = room;
     }
 
-    public void addStudentLocation(Location location){
-        if(this.student==null){
-            this.student=new ArrayList<>();
+    public List<Location> getObject() {
+        return object;
+    }
+
+    public void setObject(List<Location> object) {
+        this.object = object;
+    }
+
+    public void addStudentLocation(Location location) {
+        if (this.student == null) {
+            this.student = new ArrayList<>();
         }
         this.student.add(location);
     }
 
-    public void addRoomLocation(Location location){
-        if(this.room==null){
-            this.room=new ArrayList<>();
+    public void addRoomLocation(Location location) {
+        if (this.room == null) {
+            this.room = new ArrayList<>();
         }
         this.room.add(location);
+    }
+
+    public void addObjectLocation(Location location) {
+        if (this.object == null) {
+            this.object = new ArrayList<>();
+        }
+        this.object.add(location);
     }
 
     @Override
@@ -42,6 +58,7 @@ public class ImageInfo {
         return "ImageInfo{" +
                 "student=" + student +
                 ", room=" + room +
+                ", object=" + object +
                 '}';
     }
 }

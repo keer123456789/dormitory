@@ -8,7 +8,7 @@ import {request, METHOD, removeAuthorization} from '@/utils/request'
  * @returns {Promise<AxiosResponse<T>>}
  */
 export async function login(name, password) {
-  return request(LOGIN, METHOD.POST, {
+  return request(LOGIN, METHOD.GET, {
     username: name,
     password: password
   })
