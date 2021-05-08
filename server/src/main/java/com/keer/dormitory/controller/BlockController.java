@@ -3,18 +3,12 @@ package com.keer.dormitory.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.api.R;
-import com.keer.dormitory.core.model.PageData;
-import com.keer.dormitory.core.model.PageResult;
 import com.keer.dormitory.core.model.Result;
 import com.keer.dormitory.dto.*;
 import com.keer.dormitory.entity.*;
 import com.keer.dormitory.entity.Floor;
 import com.keer.dormitory.service.*;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -188,26 +182,34 @@ public class BlockController extends BaseController {
 
     @GetMapping("/menu-info")
     @ApiOperation(value = "获得菜单栏信息")
-    public Result<BlockFloorInfo> getMenuInfo() {
+    public Result<BlockFloorRoomInfo> getMenuInfo() {
         logger.info("接收到请求 /block/menu-info [GET]");
         List<Block> blocks = blockService.list();
         if (blocks.isEmpty()) {
             return Result.ok();
         }
-        BlockFloorInfo blockFloorInfo = new BlockFloorInfo();
+        BlockFloorRoomInfo blockFloorRoomInfo = new BlockFloorRoomInfo();
         for (Block block : blocks) {
             Menu blockMenu = new Menu(block.getName(), block.getId() + "");
-            blockFloorInfo.addBlockMenu(blockMenu);
+            blockFloorRoomInfo.addBlockMenu(blockMenu);
 
             QueryWrapper<Floor> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("block_id", block.getId());
             List<Floor> floors = floorService.list(queryWrapper);
             for (Floor floor : floors) {
                 Menu floorMenu = new Menu(floor.getName(), floor.getId() + "");
-                blockFloorInfo.putFloor(block.getId() + "", floorMenu);
+                blockFloorRoomInfo.putFloor(block.getId() + "", floorMenu);
+
+                QueryWrapper<Room> roomQueryWrapper = new QueryWrapper<>();
+                roomQueryWrapper.eq("floor_id", floor.getId());
+                List<Room> rooms = roomService.list(roomQueryWrapper);
+                for (Room room : rooms) {
+                    Menu roomMenu = new Menu(room.getName(), room.getId() + "");
+                    blockFloorRoomInfo.putRoom(floor.getId() + "", roomMenu);
+                }
             }
         }
-        return Result.ok(blockFloorInfo);
+        return Result.ok(blockFloorRoomInfo);
     }
 }
 

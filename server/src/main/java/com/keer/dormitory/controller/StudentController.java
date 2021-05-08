@@ -4,8 +4,13 @@ package com.keer.dormitory.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.keer.dormitory.core.model.Result;
+import com.keer.dormitory.dto.StudentInfo;
+import com.keer.dormitory.entity.Block;
+import com.keer.dormitory.entity.Floor;
 import com.keer.dormitory.entity.Room;
 import com.keer.dormitory.entity.Student;
+import com.keer.dormitory.service.BlockService;
+import com.keer.dormitory.service.FloorService;
 import com.keer.dormitory.service.RoomService;
 import com.keer.dormitory.service.StudentService;
 import io.swagger.annotations.Api;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import com.keer.dormitory.core.base.BaseController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +41,10 @@ public class StudentController extends BaseController {
 
     @Resource
     private StudentService studentService;
-
+    @Resource
+    private FloorService floorService;
+    @Resource
+    private BlockService blockService;
     @Resource
     private RoomService roomService;
 
@@ -45,6 +54,10 @@ public class StudentController extends BaseController {
         logger.info("接收到请求: /student [POST],data:{}", student);
         if (studentService.getById(student.getId()) != null) {
             return Result.error("学生已经存在");
+        }
+        Room room=roomService.getById(student.getRoomId());
+        if(room==null){
+            return Result.error("房间不存在！");
         }
         if (!studentService.save(student)) {
             return Result.error("增加学生信息失败！");
@@ -82,28 +95,69 @@ public class StudentController extends BaseController {
         return Result.ok();
     }
 
-    @GetMapping("/stop/{studentId}")
+    @GetMapping("/stop")
     @ApiOperation("学生退宿")
-    public Result stop(@PathVariable String studentId) {
-        logger.info("接收到请求: /student/stop [GET],data:{}", studentId);
-        if (studentService.getById(studentId) == null) {
+    public Result stop(@RequestParam String id) {
+        logger.info("接收到请求: /student/stop [GET],data:{}", id);
+        if (studentService.getById(id) == null) {
             return Result.error("学生不存在");
         }
-        UpdateWrapper<Student> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id", studentId);
-        updateWrapper.set("room_id", null);
-        if (!studentService.update(updateWrapper)) {
-            return Result.error("更新学生信息失败！");
+        Student student = studentService.getById(id);
+        if (student == null) {
+            return Result.ok();
+        }
+        if (student.getRoomId() != null) {
+            Room room = roomService.getById(student.getRoomId());
+            if (room != null) {
+                room.setEmptySize(room.getEmptySize() + 1);
+                roomService.updateById(room);
+            }
+        }
+        if (!studentService.removeById(id)) {
+            return Result.error("退宿失败！");
         }
         return Result.ok();
     }
 
     @GetMapping()
     @ApiOperation("获取学生信息列表")
-    public Result<List<Student>> list() {
+    public Result<List<StudentInfo>> list() {
         logger.info("接收到请求： /student [GET]");
         List<Student> students = studentService.list();
-        return Result.ok(students);
+        List<StudentInfo> infos = new ArrayList<>();
+        for (Student student : students) {
+            StudentInfo info = new StudentInfo();
+            info.setId(student.getId());
+            info.setAcademy(student.getAcademy());
+            info.setAddress(student.getAddress());
+            info.setName(student.getName());
+            info.setBedNum(student.getBedNum());
+            if (student.getSex() == 0) {
+                info.setSex("男");
+            } else {
+                info.setSex("女");
+            }
+            info.setIdentityNum(student.getIdentityNum());
+            info.setClassNum(student.getClassNum());
+            info.setMajor(student.getMajor());
+            info.setNation(student.getNation());
+            info.setPhoneNum(student.getPhoneNum());
+            info.setRegion(student.getRegion());
+
+            info.setRoomId(student.getRoomId());
+            if (student.getRoomId() != null) {
+                Room room = roomService.getById(student.getRoomId());
+                info.setRoom(room.getName());
+                Floor floor = floorService.getById(room.getFloorId());
+                info.setFloor(floor.getName());
+                info.setFloorId(floor.getId());
+                Block block = blockService.getById(floor.getBlockId());
+                info.setBlock(block.getName());
+                info.setBlockId(block.getId());
+            }
+            infos.add(info);
+        }
+        return Result.ok(infos);
     }
 
 }

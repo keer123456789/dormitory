@@ -36,7 +36,7 @@ export async function getStudent(){
 }
 
 export async function stop(params) {
-  return request(STOP, METHOD.POST, params)
+  return request(STOP, METHOD.GET, params)
 }
 
 export async function update(params) {
@@ -48,7 +48,7 @@ export async function getObject(){
 }
 
 export async function delObject(params) {
-  return request(DELOBJECT, METHOD.POST, params)
+  return request(DELOBJECT, METHOD.GET, params)
 }
 
 export async function editUser(params) {

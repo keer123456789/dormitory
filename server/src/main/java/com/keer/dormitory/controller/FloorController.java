@@ -49,12 +49,9 @@ public class FloorController extends BaseController {
 
     @GetMapping("/image-info")
     @ApiOperation("获取楼层平面图")
-    public Result<ImageInfo> getImageInfo(@RequestParam Integer blockId, @RequestParam Integer floorNum) {
+    public Result<ImageInfo> getImageInfo(@RequestParam Integer floorId) {
         ImageInfo imageInfo = new ImageInfo();
-        QueryWrapper<Floor> floorQueryWrapper = new QueryWrapper<>();
-        floorQueryWrapper.eq("block_id", blockId);
-        floorQueryWrapper.eq("floor_num", floorNum);
-        Floor floor = floorService.getOne(floorQueryWrapper);
+        Floor floor = floorService.getById(floorId);
         QueryWrapper<Room> roomQueryWrapper = new QueryWrapper<>();
         roomQueryWrapper.eq("floor_id", floor.getId());
         List<Room> rooms = roomService.list(roomQueryWrapper);

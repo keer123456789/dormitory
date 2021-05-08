@@ -66,7 +66,7 @@
           <a-input v-decorator="['classNum']" />
         </a-form-item>
         <a-form-item label="身份证号">
-          <a-input v-decorator="['identity_num']" />
+          <a-input v-decorator="['identityNum']" />
         </a-form-item>
         <a-form-item label="民族">
           <a-input v-decorator="['nation']" />
@@ -83,8 +83,26 @@
         <a-form-item label="床号">
           <a-input v-decorator="['bedNum']" />
         </a-form-item>
-        <a-form-item label="房间id">
-          <a-input v-decorator="['roomId']" />
+        <a-form-item label="房间名称">
+          <a-select style="width: 120px" @change="blockChange">
+            <a-select-option v-for="block in blockData" :key="block.value">
+              {{ block.name }}
+            </a-select-option>
+          </a-select>
+          <a-select v-model="second" style="width: 120px" @change="floorChange">
+            <a-select-option v-for="floor in floors" :key="floor.value">
+              {{ floor.name }}
+            </a-select-option>
+          </a-select>
+          <a-select
+            v-model="third"
+            style="width: 120px"
+            v-decorator="['roomId']"
+          >
+            <a-select-option v-for="room in rooms" :key="room.value">
+              {{ room.name }}
+            </a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item label="地区">
           <a-input v-decorator="['region']" />
@@ -133,7 +151,7 @@
           <a-input v-decorator="['classNum']" />
         </a-form-item>
         <a-form-item label="身份证号">
-          <a-input v-decorator="['identity_num']" />
+          <a-input v-decorator="['identityNum']" />
         </a-form-item>
         <a-form-item label="民族">
           <a-input v-decorator="['nation']" />
@@ -150,8 +168,22 @@
         <a-form-item label="床号">
           <a-input v-decorator="['bedNum']" />
         </a-form-item>
-        <a-form-item label="房间id">
-          <a-input v-decorator="['roomId']" />
+        <a-form-item label="房间名称">
+          <a-select v-decorator="['first']" style="width: 120px" @change="blockChange">
+            <a-select-option v-for="block in blockData" :key="block.value">
+              {{ block.name }}
+            </a-select-option>
+          </a-select>
+          <a-select v-decorator="['second']" style="width: 120px" @change="floorChange">
+            <a-select-option v-for="floor in floors" :key="floor.value">
+              {{ floor.name }}
+            </a-select-option>
+          </a-select>
+          <a-select v-decorator="['roomId']" style="width: 120px">
+            <a-select-option v-for="room in rooms" :key="room.value">
+              {{ room.name }}
+            </a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item label="地区">
           <a-input v-decorator="['region']" />
@@ -165,7 +197,13 @@
 </template>
 
 <script>
-import { student, getStudent, stop, update } from "@/services/dataSource";
+import {
+  student,
+  getStudent,
+  stop,
+  update,
+  getBuildData,
+} from "@/services/dataSource";
 
 var data = [];
 
@@ -179,6 +217,13 @@ export default {
       confirmLoadingForEdit: false,
       visible: false,
       visibleForEdit: false,
+      blockData: [],
+      floorData: {},
+      roomData: {},
+      floors: [],
+      rooms: [],
+      second: [],
+      third: [],
       columns: [
         {
           title: "姓名",
@@ -211,8 +256,12 @@ export default {
           dataIndex: "bedNum",
         },
         {
-          title: "房间id",
-          dataIndex: "roomId",
+          title: "宿舍楼",
+          dataIndex: "block",
+        },
+        {
+          title: "房间名称",
+          dataIndex: "room",
         },
         {
           title: "手机号",
@@ -220,7 +269,7 @@ export default {
         },
         {
           title: "身份证号",
-          dataIndex: "identity_num",
+          dataIndex: "identityNum",
         },
         {
           title: "民族",
@@ -251,6 +300,11 @@ export default {
     this.formForEdit = this.$form.createForm(this, { name: "form_in_modal " });
   },
   mounted() {
+    getBuildData().then((result) => {
+      this.blockData = result.data.data.blocks;
+      this.floorData = result.data.data.floors;
+      this.roomData = result.data.data.rooms;
+    });
     getStudent().then((result) => {
       // console.log(result.data.data);
       this.data = result.data.data;
@@ -289,6 +343,15 @@ export default {
           console.log(result);
           if (result.data.code == 200) {
             this.$message.info("添加成功！");
+            getStudent().then((result) => {
+              // console.log(result.data.data);
+              this.data = result.data.data;
+              this.datalt = this.data;
+            });
+          } else if (result.data.code == 500) {
+            this.$message.info(result.data.msg);
+          } else {
+            this.$message.info("添加失败！");
           }
         });
         form.resetFields();
@@ -302,6 +365,8 @@ export default {
     },
     doEdit(text) {
       console.log(text);
+      this.blockChange(text.blockId);
+      this.floorChange(text.floorId);
       this.visibleForEdit = true;
       this.$nextTick(() => {
         this.formForEdit.setFieldsValue({
@@ -312,12 +377,14 @@ export default {
           sex: text.sex,
           classNum: text.classNum,
           bedNum: text.bedNum,
-          roomId: text.roomId,
           phoneNum: text.phoneNum,
-          identity_num: text.identity_num,
+          identityNum: text.identityNum,
           nation: text.nation,
           region: text.region,
           address: text.address,
+          roomId: text.room,
+          first: text.block,
+          second: text.floor,
         });
       });
     },
@@ -331,9 +398,17 @@ export default {
           return;
         }
         console.log("formForEdit 表单内容: ", values);
-        update(values).then((result)=>{
-          if(result.data.code == 200){
+        update(values).then((result) => {
+          if (result.data.code == 200) {
+            this.$message.info("修改成功！");
+            getStudent().then((result) => {
+              this.data = result.data.data;
+              this.datalt = this.data;
+            });
+          } else if (result.data.code == 500) {
             this.$message.info(result.data.msg);
+          } else {
+            this.$message.info("修改失败！");
           }
         });
         formForEdit.resetFields();
@@ -351,8 +426,22 @@ export default {
         console.log(result);
         if (result.data.code == 200) {
           this.$message.info("退宿成功！");
+          getStudent().then((result) => {
+            this.data = result.data.data;
+            this.datalt = this.data;
+          });
+        } else if (result.data.code == 500) {
+          this.$message.info(result.data.msg);
+        } else {
+          this.$message.info("退宿失败！");
         }
       });
+    },
+    blockChange(value) {
+      this.floors = this.floorData[value];
+    },
+    floorChange(value) {
+      this.rooms = this.roomData[value];
     },
   },
 };

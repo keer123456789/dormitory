@@ -62,11 +62,11 @@ export default {
         },
         {
           title: "宿舍楼号",
-          dataIndex: "blockname",
+          dataIndex: "block",
         },
         {
           title: "楼层号",
-          dataIndex: "floorname",
+          dataIndex: "floor",
         },
         {
           title: "操作",
@@ -93,16 +93,23 @@ export default {
         this.datalt = this.data;
       }
     },
-    doDelete(text){
-        let params={};
-        params.key = text.key;
-        delObject(params).then((result)=>{
-            console.log(result);
-            if(result.data.code == 200){
-                this.$message.info(result.data.msg);
-            }
-        })
-    }
+    doDelete(text) {
+      let params = {};
+      params.key = text.key;
+      delObject(params).then((result) => {
+        if (result.data.code == 200) {
+          this.$message.info("删除成功！");
+          getObject().then((result) => {
+            this.data = result.data.data;
+            this.datalt = this.data;
+          });
+        } else if (result.data.code == 500) {
+          this.$message.info(result.data.msg);
+        } else {
+          this.$message.info("删除失败！");
+        }
+      });
+    },
   },
 };
 </script>

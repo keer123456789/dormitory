@@ -121,14 +121,15 @@ export default {
       this.cityData = result.data.data.floors;
     });
     this.getMap({
-      blockId: "123",
-      floorNum: "111",
+      // blockId: "123",
+      floorId: "1",
     });
   },
   methods: {
     handleProvinceChange(value) {
       this.cities = this.cityData[value];
-      // this.secondCity = cityData[value][0].name;
+      this.secondCity = "";
+      this.floorname = "";
       for (let i in this.provinceData) {
         if (this.provinceData[i].value == value) {
           this.block_name = this.provinceData[i].name;
@@ -137,18 +138,17 @@ export default {
       this.buildname = value;
     },
     floorChange(value) {
-      console.log(this.cityData[value]);
-      for (let i in this.cityData[value]) {
-        if (this.cityData[value][i].value == value) {
-          this.floor_name = this.cityData[value][i].name;
+      for (let i in this.cityData[this.buildname]) {
+        if (this.cityData[this.buildname][i].value == value) {
+          this.floor_name = this.cityData[this.buildname][i].name;
         }
       }
       this.floorname = value;
     },
     doSearch() {
       this.getMap({
-        blockId: this.buildname,
-        floorNum: this.floorname,
+        // blockId: this.buildname,
+        floorId: this.floorname,
       });
     },
     getMap(params) {
