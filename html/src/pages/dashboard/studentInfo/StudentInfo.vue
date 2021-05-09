@@ -179,7 +179,7 @@
               {{ floor.name }}
             </a-select-option>
           </a-select>
-          <a-select v-decorator="['roomId']" style="width: 120px">
+          <a-select  v-decorator="['roomId']" style="width: 120px" >
             <a-select-option v-for="room in rooms" :key="room.value">
               {{ room.name }}
             </a-select-option>
@@ -292,6 +292,7 @@ export default {
       ],
       data,
       datalt: data,
+      defaultRoomId:1
     };
   },
   beforeCreate() {

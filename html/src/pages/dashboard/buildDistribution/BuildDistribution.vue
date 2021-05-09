@@ -8,11 +8,15 @@
       </a-col>
       <a-col :span="24">
         <a-card :bordered="false" style="width: 100%">
-          <a-table
-            :columns="columns"
-            :data-source="data"
-            :loading="loading"
+          <a-upload
+            action="http://127.0.0.1:8080/file/block/upload"
+            :multiple="true"
+            :file-list="fileList"
+            @change="handleChange"
           >
+            <a-button> <a-icon type="upload" /> 批量导入宿舍楼 </a-button>
+          </a-upload>
+          <a-table :columns="columns" :data-source="data" :loading="loading">
             <a slot="name" slot-scope="text">{{ text }}</a>
             <span slot="action" slot-scope="text">
               <a @click="edit(text)">编辑</a>
@@ -71,39 +75,39 @@
 import { users, editUser } from "@/services/dataSource";
 
 const columns = [
-    {
-        title: "用户名",
-        dataIndex: "name",
-        key: "name",
-        scopedSlots: { customRender: "name" },
-    },
-    {
-        title: "角色",
-        dataIndex: "role",
-        key: "role",
-        width: 80,
-    },
-    {
-        title: "宿舍楼id",
-        dataIndex: "buildId",
-        key: "buildId",
-        ellipsis: true,
-    },
-    {
-        title: "宿舍楼名称",
-        dataIndex: "buildName",
-        key: "buildName",
-        ellipsis: true,
-    },
-    {
-        title: "操作",
-        key: "action",
-        scopedSlots: { customRender: "action" },
-    },
+  {
+    title: "用户名",
+    dataIndex: "name",
+    key: "name",
+    scopedSlots: { customRender: "name" },
+  },
+  {
+    title: "角色",
+    dataIndex: "role",
+    key: "role",
+    width: 80,
+  },
+  {
+    title: "宿舍楼id",
+    dataIndex: "buildId",
+    key: "buildId",
+    ellipsis: true,
+  },
+  {
+    title: "宿舍楼名称",
+    dataIndex: "buildName",
+    key: "buildName",
+    ellipsis: true,
+  },
+  {
+    title: "操作",
+    key: "action",
+    scopedSlots: { customRender: "action" },
+  },
 ];
 
 var result = {
-  data: []
+  data: [],
 };
 
 export default {
@@ -119,6 +123,7 @@ export default {
       visible: false,
       confirmLoading: false,
       loading: false,
+      fileList: [{}],
     };
   },
   mounted() {
@@ -155,15 +160,15 @@ export default {
           this.confirmLoading = false;
           return;
         }
-        editUser(values).then((result)=>{
-          console.log(result)
-          if(result.data.code == 200){
+        editUser(values).then((result) => {
+          console.log(result);
+          if (result.data.code == 200) {
             this.getUsers();
             this.$message.info("修改成功！");
-          } else{
+          } else {
             this.$message.info(result.data.msg);
           }
-        })
+        });
         console.log("form 表单内容: ", values);
         form.resetFields();
         this.visible = false;
@@ -173,6 +178,24 @@ export default {
     handleCancel() {
       console.log("Clicked cancel button");
       this.visible = false;
+    },
+    handleChange(info) {
+      let fileList = [...info.fileList];
+      fileList = fileList.slice(-2);
+      fileList = fileList.map(file => {
+        if (file.response) {
+          file.url = file.response.url;
+        }
+        return file;
+      });
+      this.fileList = fileList;
+      if (info.file.response.code == 200) {
+        this.$message.info("导入成功！");
+        this.getUsers();
+        this.fileList = [{}];
+      } else {
+        this.$message.info("导入失败！");
+      }
     },
   },
 };

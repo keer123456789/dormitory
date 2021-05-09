@@ -51,23 +51,23 @@ public class TaskController extends BaseController {
     }
 
     @ApiOperation(value = "运行任务")
-    @GetMapping("/run/{taskId}")
+    @GetMapping("/run")
     @ResponseBody
-    public Result runTask(@PathVariable Integer taskId) {
-        logger.info("接收到请求 /task/run/{} [GET] ", taskId);
-        Task task = taskService.getById(taskId);
+    public Result runTask(@RequestParam Integer id) {
+        logger.info("接收到请求 /task/run/{} [GET] ", id);
+        Task task = taskService.getById(id);
         taskService.sortRoom(task, 0);
         taskService.sortRoom(task, 1);
         return Result.ok();
     }
 
-    @GetMapping("/sort-info/{taskId}")
+    @GetMapping("/sort-info")
     @ApiOperation("获取分配宿舍的信息")
-    public Result<BlockSortInfo> getSortInfo(@PathVariable Integer taskId) {
-        logger.info("接收到请求 /task/sort-info/{} [GET]", taskId);
-        Task task = taskService.getById(taskId);
-        List<SortInfo> maleSortInfo = taskService.getSortInfo(taskId, 0);
-        List<SortInfo> femaleSortInfo = taskService.getSortInfo(taskId, 1);
+    public Result<BlockSortInfo> getSortInfo(@RequestParam Integer id) {
+        logger.info("接收到请求 /task/sort-info/{} [GET]", id);
+        Task task = taskService.getById(id);
+        List<SortInfo> maleSortInfo = taskService.getSortInfo(id, 0);
+        List<SortInfo> femaleSortInfo = taskService.getSortInfo(id, 1);
         BlockSortInfo blockSortInfo = new BlockSortInfo();
         blockSortInfo.setFemaleInfo(femaleSortInfo);
         blockSortInfo.setMaleInfo(maleSortInfo);

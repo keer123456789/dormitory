@@ -209,7 +209,7 @@ export default {
         const routesConfig = result_login.data;
         loadRoutes(routesConfig);
         this.$router.push("/dashboard/workplace");
-        this.$message.success(loginRes.message, 3);
+        this.$message.success("欢迎登陆！");
         // })
       } else {
         this.error = loginRes.message;

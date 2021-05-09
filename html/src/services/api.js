@@ -5,7 +5,7 @@
 const BASE_URL = `http://127.0.0.1:8080`;
 module.exports = {
   LOGIN: `${BASE_URL}/user/login`,
-  REGISTER: `${BASE_URL}/register`,
+  REGISTER: `${BASE_URL}/user/register`,
   ROUTES: `${BASE_URL}/routes`,
   GOODS: `${BASE_URL}/goods`,
   USERS: `${BASE_URL}/user`,
@@ -19,4 +19,7 @@ module.exports = {
   GETOBJECT: `${BASE_URL}/object`,
   DELOBJECT: `${BASE_URL}/object/delete`,
   EDITUSER: `${BASE_URL}/user`,
+  UPDATEINFO: `${BASE_URL}/task/update-info`,
+  SORTINFO: `${BASE_URL}/task/sort-info`,
+  RUN: `${BASE_URL}/task/run`,
 }

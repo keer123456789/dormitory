@@ -59,6 +59,10 @@ public class StudentController extends BaseController {
         if(room==null){
             return Result.error("房间不存在！");
         }
+        if(student.getBedNum()>room.getSize()||student.getBedNum()<1){
+            return Result.error("床位号错误");
+        }
+
         if (!studentService.save(student)) {
             return Result.error("增加学生信息失败！");
         }
