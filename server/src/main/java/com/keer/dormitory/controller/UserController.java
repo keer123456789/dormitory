@@ -75,7 +75,12 @@ public class UserController extends BaseController {
         resultJson.put("token", "Authorization:" + UUID.randomUUID().toString());
         resultJson.put("expireAt", getTomorrow());
         resultJson.put("permissions", JSON.parse("[{\"id\":\"queryForm\",\"operation\":[\"add\",\"edit\"]}]"));
-        resultJson.put("roles", JSON.parse("[{\"id\":\"admin\",\"operation\":[\"add\",\"edit\",\"delete\"]}]"));
+        if(user.getRole()==0){
+            resultJson.put("roles", JSON.parse("[{\"id\":\"admin\",\"operation\":[\"add\",\"edit\",\"delete\"]}]"));
+        }else{
+            resultJson.put("roles", JSON.parse("[{\"id\":\"user\",\"operation\":[\"add\",\"edit\",\"delete\"]}]"));
+        }
+
         resultJson.put("user", JSON.parse("{\"name\":\"" + user.getName() + "\"}"));
         return Result.ok(resultJson);
     }
